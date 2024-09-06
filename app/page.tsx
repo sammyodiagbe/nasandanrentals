@@ -1,6 +1,8 @@
 import CustomButton from "@/components/app-components/button";
 import Navbar from "@/components/app-components/navabar";
 import Hero from "@/components/hero";
+import Testimonials from "@/components/home/customersReview";
+import WhyChooseUsComponent from "@/components/home/whychooseus";
 import ConnectSupabaseSteps from "@/components/tutorial/connect-supabase-steps";
 import SignUpUserSteps from "@/components/tutorial/sign-up-user-steps";
 import { hasEnvVars } from "@/utils/supabase/check-env-vars";
@@ -44,7 +46,9 @@ export default async function Index() {
             rental periods, and unbeatable customer service, we ensure you get
             the best driving experience possible.
           </p>
+          <WhyChooseUsComponent />
         </section>
+        <Testimonials />
       </main>
     </>
   );
