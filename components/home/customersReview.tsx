@@ -38,7 +38,7 @@ const Testimonials = () => {
         <p>We are trusted by our customers. Here's what they have to say.</p>
         <CustomButton
           title="Book a car now"
-          style="bg-blue-500 hover:bg-blue-600"
+          style="bg-green-500 hover:bg-green-600"
         />
       </div>
       <div

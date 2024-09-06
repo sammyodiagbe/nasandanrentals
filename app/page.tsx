@@ -6,6 +6,7 @@ import WhyChooseUsComponent from "@/components/home/whychooseus";
 import ConnectSupabaseSteps from "@/components/tutorial/connect-supabase-steps";
 import SignUpUserSteps from "@/components/tutorial/sign-up-user-steps";
 import { hasEnvVars } from "@/utils/supabase/check-env-vars";
+import Image from "next/image";
 import Link from "next/link";
 
 export default async function Index() {
@@ -13,9 +14,9 @@ export default async function Index() {
     <>
       <main className="flex-1 flex flex-col gap-6 px-4">
         <Navbar />
-        <div className="grid grid-cols-2 px-4 py-4 ">
-          <section className=" space-y-8">
-            <h1 className="text-8xl font-bold leading-[4.5rem]">
+        <div className="flex px-4 py-4 ">
+          <section className="w-[35rem] space-y-8">
+            <h1 className="text-7xl font-bold text-gray-700 leading-[4.5rem]">
               Rent the perfect car for every journey
             </h1>
             <p>
@@ -25,7 +26,7 @@ export default async function Index() {
             <div className="flex gap-2">
               <CustomButton
                 title="Book a car now"
-                style="bg-blue-500 hover:bg-blue-600"
+                style="bg-green-500 hover:bg-green-600"
               />
               <Link href={"/sign-up"}>
                 <CustomButton
@@ -35,7 +36,15 @@ export default async function Index() {
               </Link>
             </div>
           </section>
-          <section></section>
+          <section className="flex-1">
+            <Image
+              src={"/images/hero_image.svg"}
+              height={500}
+              width={500}
+              alt="Car sideways"
+              className="w-auto h-auto"
+            />
+          </section>
         </div>
         {/* why choose us */}
         <section className="p-4  text-center space-y-8">
@@ -49,6 +58,28 @@ export default async function Index() {
           <WhyChooseUsComponent />
         </section>
         <Testimonials />
+        <section className="flex p-4 items-center">
+          <div className="flex-1">
+            <Image
+              src={"/images/hero_image2.svg"}
+              height={500}
+              width={500}
+              alt="Car sideways"
+              className="w-auto h-auto"
+            />
+          </div>
+          <div className=" w-[30rem] space-y-5">
+            <h1 className="text-6xl font-bold">Ready to hit the road?</h1>
+            <p>
+              Find the perfect car for your next trip and start your journey
+              today.
+            </p>
+            <CustomButton
+              title="Book a car now"
+              style="bg-green-500 hover:bg-green-600"
+            />
+          </div>
+        </section>
       </main>
     </>
   );
