@@ -12,7 +12,7 @@ type TButton = {
 const CustomButton: FC<TButton> = ({ title, callback, style, asChild }) => {
   return (
     <Button
-      className={cn("py-6 px-5 ", style)}
+      className={cn("py-6 px-5 transition-all ", style)}
       onClick={callback}
       asChild={asChild}
     >

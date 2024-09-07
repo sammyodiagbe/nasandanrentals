@@ -30,7 +30,7 @@ const items = [
 
 const WhyChooseUsComponent = () => {
   return (
-    <div className="grid grid-cols-4 gap-[30px]">
+    <div className="grid grid-cols-4 gap-[30px] ">
       {items.map((item, index) => {
         const { title, description } = item;
         return (

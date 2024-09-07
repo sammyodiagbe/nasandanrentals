@@ -14,7 +14,7 @@ export default async function Index() {
     <>
       <main className="flex-1 flex flex-col gap-6 px-4 lg:container">
         <Navbar />
-        <div className="flex px-4 py-4 ">
+        <div className="flex px-4 py-4 my-5">
           <section className="w-[35rem] space-y-8">
             <h1 className="text-7xl font-bold text-gray-700 leading-[4.5rem]">
               Rent the perfect car for every journey
@@ -47,7 +47,7 @@ export default async function Index() {
           </section>
         </div>
         {/* why choose us */}
-        <section className="p-4  text-center space-y-8">
+        <section className="p-4  text-center space-y-8 my-5">
           <h1 className="text-6xl font-bold">Why choose us?</h1>
           <p className="text-center mx-auto max-w-[700px] ">
             At Nasandan, we make car rentals simple, affordable, and
@@ -58,7 +58,7 @@ export default async function Index() {
           <WhyChooseUsComponent />
         </section>
         <Testimonials />
-        <section className="flex p-4 items-center gap-[30px]">
+        <section className="flex p-4 items-center gap-[30px] my-5">
           <div className="flex-1">
             <Image
               src={"/images/hero_image2.svg"}

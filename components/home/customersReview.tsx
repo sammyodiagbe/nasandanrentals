@@ -32,7 +32,7 @@ const reviews = [
 
 const Testimonials = () => {
   return (
-    <div className="p-4 flex gap-[30px] items-center">
+    <div className="p-4 flex gap-[30px] items-center my-5">
       <div className="space-y-5 w-[35rem]">
         <h1 className="text-6xl font-bold">What our customers have to say.</h1>
         <p>We are trusted by our customers. Here's what they have to say.</p>
