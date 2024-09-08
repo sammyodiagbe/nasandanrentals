@@ -15,7 +15,7 @@
 
 
 .booking-card {
-  @apply min-h-20 bg-gray-100 rounded-sm p-4;
+  @apply min-h-24 bg-gray-100 rounded-sm p-4 space-y-6 text-gray-800;
 }
 @layer base {
   :root {

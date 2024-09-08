@@ -2,6 +2,7 @@
 import CustomButton from "@/components/app-components/button";
 import { createClient } from "@/utils/supabase/client";
 import Image from "next/image";
+import Link from "next/link";
 import { FC, useEffect, useState } from "react";
 
 const Collections = () => {
@@ -80,14 +81,18 @@ const Collections = () => {
                     />
                   </div>
                   <div className="flex justify-end gap-2">
-                    <CustomButton
-                      title="Reserve"
-                      style="bg-gray-200 hover:bg-gray-300 text-black"
-                    />
-                    <CustomButton
-                      title="Book now"
-                      style="bg-green-500 hover:bg-green-600"
-                    />
+                    <Link href={`/rent?car_id=${car.id}`}>
+                      <CustomButton
+                        title="Reserve"
+                        style="bg-gray-200 hover:bg-gray-300 text-black"
+                      />
+                    </Link>
+                    <Link href={`/rent?car_id=${car.id}`}>
+                      <CustomButton
+                        title="Book now"
+                        style="bg-green-500 hover:bg-green-600"
+                      />
+                    </Link>
                   </div>
                 </div>
               </div>
