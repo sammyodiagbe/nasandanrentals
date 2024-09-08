@@ -28,7 +28,7 @@ import {
 } from "@/components/ui/popover";
 
 const formSchema = z.object({
-  pickupDate: z.string(),
+  pickupDate: z.date(),
   pickupTime: z.string(),
   returnDate: z.string(),
   returnTime: z.string(),
@@ -46,7 +46,7 @@ const RentPage = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      pickupDate: "",
+      pickupDate: undefined,
       pickupTime: "",
       returnDate: "",
       returnTime: "",
@@ -119,16 +119,19 @@ const RentPage = () => {
                                 )}
                               >
                                 <CalendarIcon className="mr-2 h-4 w-4" />
-                                <span>Pick a date</span>
+                                <span>
+                                  {field.value
+                                    ? format(field.value, "PPP")
+                                    : "Select pickup date"}
+                                </span>
                               </Button>
                             </PopoverTrigger>
                             <PopoverContent className="w-auto p-0">
                               <Calendar
                                 mode="single"
+                                selected={field.value}
                                 {...field}
-                                onSelect={(value) => {
-                                  console.log(value);
-                                }}
+                                onSelect={field.onChange}
                               />
                             </PopoverContent>
                           </Popover>
@@ -156,7 +159,7 @@ const RentPage = () => {
                 <div className="grid grid-cols-2 gap-[1.9rem] w-full">
                   <FormField
                     control={form.control}
-                    name="pickupDate"
+                    name="returnDate"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Return Date</FormLabel>
@@ -190,7 +193,7 @@ const RentPage = () => {
                 <div className="grid grid-cols-2 gap-[1.9rem] w-full ">
                   <FormField
                     control={form.control}
-                    name="pickupDate"
+                    name="emailAddress"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Email Address</FormLabel>
@@ -208,7 +211,7 @@ const RentPage = () => {
                   />
                   <FormField
                     control={form.control}
-                    name="pickupTime"
+                    name="fullname"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Fullname</FormLabel>
@@ -222,7 +225,15 @@ const RentPage = () => {
                   />
                 </div>
 
-                <Button type="submit">Submit</Button>
+                <div className="flex items-center justify-between">
+                  <h1>Total CA $100 </h1>
+                  <div className="space-x-1">
+                    <Button className="bg-gray-100 hover:bg-gray-100 text-gray-800">
+                      Reserve
+                    </Button>
+                    <Button type="submit">Submit</Button>
+                  </div>
+                </div>
               </form>
             </Form>
           </div>
