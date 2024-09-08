@@ -37,7 +37,7 @@ const Collections = () => {
       <section className="grid grid-cols-3 gap-[30px]">
         {allCars?.map((car, index) => {
           return (
-            <div className="flex  flex-col" key={index}>
+            <div className="flex  flex-col justify-between" key={index}>
               <Image
                 src={car.image_url}
                 alt={car.name}
@@ -46,25 +46,26 @@ const Collections = () => {
                 className="w-auto h-auto"
               />
               <div className="">
-                <div className="flex justify-between items-center">
-                  <h2 className="my-3 font-medium">{car.name}</h2>
-                  <span className="">
-                    CA $ {car.price}{" "}
-                    <span className="ml-1 text-xs">per day</span>
-                  </span>
+                <div className="mb-4">
+                  <div className="flex justify-between items-center">
+                    <h2 className="mb-1 font-medium">{car.name}</h2>
+                    <span className="text-sm">
+                      CA $ {car.price} <span className="ml-1">per day</span>
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <Image
+                      src={"/icons/Gauge.svg"}
+                      height={24}
+                      width={24}
+                      className="h-4 w-4"
+                      alt="allowd km per day"
+                    />
+                    <span className="text-sm">{car.allowed_km} KM per day</span>
+                  </div>
                 </div>
-                <div className="flex items-center gap-1">
-                  <Image
-                    src={"/icons/Gauge.svg"}
-                    height={24}
-                    width={24}
-                    className="h-5 w-5"
-                    alt="allowd km per day"
-                  />
-                  <span className="text-sm">{car.allowed_km} KM per day</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <div className="flex gap-1">
+                <div className="flex justify-between items-center justify-self-end ">
+                  <div className="flex gap-2">
                     <FeatureComponent
                       img_path="/icons/Seat.svg"
                       value={car.doors}
