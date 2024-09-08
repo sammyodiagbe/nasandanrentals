@@ -43,7 +43,7 @@ const Collections = () => {
                 alt={car.name}
                 width={500}
                 height={500}
-                className="w-auto h-auto"
+                className="w-auto h-auto mb-5"
               />
               <div className="">
                 <div className="mb-4">
