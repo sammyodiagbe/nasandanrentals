@@ -4,7 +4,7 @@ import { encodedRedirect } from "@/utils/utils";
 import { createClient } from "@/utils/supabase/server";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
-import { TbookingRequired } from "@/utils/types";
+import { TBooking, TbookingRequired } from "@/utils/types";
 
 export const signUpAction = async (formData: FormData) => {
   const email = formData.get("email")?.toString();
@@ -130,21 +130,22 @@ export const signOutAction = async () => {
   return redirect("/sign-in");
 };
 
-export const bookVehicle = async (
-  form: FormData,
-  otherData: TbookingRequired
-) => {
+export const bookVehicle = async (formData: TBooking) => {
+  console.log("checking to see if actions is triggered");
   const supabase = createClient();
-  const pickupDate = form.get("pickupDate");
-  const pickupTime = form.get("pickupTime");
-  const returnTime = form.get("returnTime");
-  const returnDate = form.get("returnDate");
-  const fullname = form.get("fullname");
-  const address = form.get("address");
+  const {
+    pickupDate,
+    pickupTime,
+    returnDate,
+    returnTime,
+    carId,
+    totalCost,
+    emailAddress,
+    fullname,
+    address,
+  } = formData;
   const user = await supabase.auth.getUser();
   const origin = headers().get("origin");
-  const carId = otherData.car_id!;
-  const cost = otherData.total_cost;
 
   if (!user) {
     redirect(`${origin}`);
@@ -155,14 +156,17 @@ export const bookVehicle = async (
     pickup_date: pickupDate,
     return_time: returnTime,
     return_date: returnDate,
-    total_cost: cost,
+    total_cost: totalCost,
     car_id: carId,
     fullname,
     address,
+    email: emailAddress,
     status: 1,
+    user_id: user.data.user?.id,
   });
 
   if (error) {
+    console.log(error);
     return 0;
   }
   console.log(data);

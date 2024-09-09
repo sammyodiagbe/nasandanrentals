@@ -79,9 +79,13 @@ const RentPage = () => {
     }
   };
 
-  const book: SubmitHandler<FormSchema> = (formData) => {
+  const book: SubmitHandler<FormSchema> = async (formData) => {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
+    await bookVehicle({ ...formData, carId: parseInt(carId!), totalCost: 200 });
+  };
+
+  const bookAction = (formData: FormData) => {
     console.log(formData);
   };
   return (
@@ -101,7 +105,11 @@ const RentPage = () => {
         <div className="flex-1">
           <h1>Rent Details</h1>
           <div className="">
-            <form onSubmit={handleSubmit(book)} className="space-y-3">
+            <form
+              onSubmit={handleSubmit(book)}
+              className="space-y-3"
+              action={bookAction}
+            >
               <div className="grid grid-cols-2 gap-[1.9rem]">
                 <Controller
                   control={control}
@@ -306,11 +314,16 @@ const RentPage = () => {
               <div className="flex justify-between items-center">
                 <h2>Total CA $ 100</h2>
                 <div className="space-x-4">
-                  <Button className="bg-gray-100 hover:bg-gray-200 text-foreground">
+                  <Button
+                    type="button"
+                    disabled={isSubmitting}
+                    className="bg-gray-100 hover:bg-gray-200 text-foreground"
+                  >
                     Reserve
                   </Button>
                   <Button
                     type="submit"
+                    disabled={isSubmitting}
                     className="bg-green-500 hover:bg-green-500"
                   >
                     Book this car
