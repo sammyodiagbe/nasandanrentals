@@ -2,19 +2,15 @@
 import { createClient } from "@/utils/supabase/client";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { z } from "zod";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
+  SubmitHandler,
+  useForm,
+  Controller as FormController,
+  Controller,
+} from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { format } from "date-fns";
@@ -26,33 +22,42 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { generateTime } from "@/utils/timeOptions";
+import { bookVehicle } from "../actions";
 
 const formSchema = z.object({
   pickupDate: z.date(),
   pickupTime: z.string(),
-  returnDate: z.string(),
+  returnDate: z.date(),
   returnTime: z.string(),
   fullname: z.string(),
   emailAddress: z.string(),
   address: z.string(),
 });
 
+type FormSchema = z.infer<typeof formSchema>;
+
+const times = generateTime(7, 17);
+
 const RentPage = () => {
   const searchParams = useSearchParams();
   const supabase = createClient();
   const carId = searchParams.get("car_id");
-  const [errorFetching, setError] = useState(false);
   const [car, setCar] = useState<any | null>(null);
-  const form = useForm<z.infer<typeof formSchema>>({
+  const {
+    handleSubmit,
+    control,
+
+    formState: { errors, isSubmitting },
+  } = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      pickupDate: undefined,
-      pickupTime: "",
-      returnDate: "",
-      returnTime: "",
-      fullname: "",
-      emailAddress: "",
-    },
   });
 
   useEffect(() => {
@@ -65,21 +70,19 @@ const RentPage = () => {
       .select()
       .eq("id", carId);
     if (error) {
-      console.log(error);
-      setError(true);
       return;
     }
     if (car) {
       setCar(car[0]);
-      setError(false);
+      // setError(false);
     }
   };
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  const book: SubmitHandler<FormSchema> = (formData) => {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    console.log(values);
-  }
+    console.log(formData);
+  };
   return (
     <main className="lg:container py-4">
       <h1 className="font-medium text-3xl mb-5 ">
@@ -97,145 +100,208 @@ const RentPage = () => {
         <div className="flex-1">
           <h1>Rent Details</h1>
           <div className="">
-            <Form {...form}>
-              <form
-                onSubmit={form.handleSubmit(onSubmit)}
-                className="space-y-8"
-              >
-                <div className="grid grid-cols-2 gap-[1.9rem] w-ful">
-                  <FormField
-                    control={form.control}
-                    name="pickupDate"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Pickup Date</FormLabel>
-                        <FormControl className="w-full">
-                          <Popover>
-                            <PopoverTrigger asChild>
-                              <Button
-                                variant={"outline"}
-                                className={cn(
-                                  "w-full justify-start text-left font-normal"
-                                )}
-                              >
-                                <CalendarIcon className="mr-2 h-4 w-4" />
-                                <span>
-                                  {field.value
-                                    ? format(field.value, "PPP")
-                                    : "Select pickup date"}
-                                </span>
-                              </Button>
-                            </PopoverTrigger>
-                            <PopoverContent className="w-auto p-0">
-                              <Calendar
-                                mode="single"
-                                selected={field.value}
+            <form onSubmit={handleSubmit(book)} className="space-y-3">
+              <Controller
+                control={control}
+                name="pickupDate"
+                render={({ field }) => {
+                  return (
+                    <div>
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <Button
+                            variant={"outline"}
+                            className={cn(
+                              "w-full justify-start text-left font-normal"
+                            )}
+                          >
+                            <CalendarIcon className="mr-2 h-4 w-4" />
+                            <span>
+                              {field.value
+                                ? format(field.value, "PPP")
+                                : "Select pickup date"}
+                            </span>
+                          </Button>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-auto p-0">
+                          <Calendar
+                            mode="single"
+                            selected={field.value}
+                            {...field}
+                            onDayClick={field.onChange}
+                          />
+                        </PopoverContent>
+                      </Popover>
+                      <span className="block text-red-500">
+                        {errors.pickupDate?.message}
+                      </span>
+                    </div>
+                  );
+                }}
+              />
+
+              <Controller
+                name="pickupTime"
+                control={control}
+                render={({ field }) => {
+                  return (
+                    <div>
+                      <span className="block text-bold">
+                        value: {field.value}
+                      </span>
+                      <Select onValueChange={field.onChange}>
+                        <SelectTrigger className="">
+                          <SelectValue placeholder="Choose Pickup Time" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {times.map((time, index) => {
+                            return (
+                              <SelectItem
                                 {...field}
-                                onSelect={field.onChange}
-                              />
-                            </PopoverContent>
-                          </Popover>
-                        </FormControl>
+                                value={time}
+                                key={Math.random()}
+                              >
+                                {time}
+                              </SelectItem>
+                            );
+                          })}
+                        </SelectContent>
+                      </Select>
+                      <span className="block text-red-500">
+                        {errors.pickupTime?.message}
+                      </span>
+                    </div>
+                  );
+                }}
+              />
 
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="pickupTime"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Pickup Time</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Pickup time" {...field} />
-                        </FormControl>
-
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-                <div className="grid grid-cols-2 gap-[1.9rem] w-full">
-                  <FormField
-                    control={form.control}
-                    name="returnDate"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Return Date</FormLabel>
-                        <FormControl className="w-full">
-                          <Input
-                            placeholder="Pickup Date"
-                            className="w-full"
+              <Controller
+                control={control}
+                name="returnDate"
+                render={({ field }) => {
+                  return (
+                    <div>
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <Button
+                            variant={"outline"}
+                            className={cn(
+                              "w-full justify-start text-left font-normal"
+                            )}
+                          >
+                            <CalendarIcon className="mr-2 h-4 w-4" />
+                            <span>
+                              {field.value
+                                ? format(field.value, "PPP")
+                                : "Select return date"}
+                            </span>
+                          </Button>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-auto p-0">
+                          <Calendar
+                            mode="single"
+                            selected={field.value}
                             {...field}
+                            onDayClick={field.onChange}
                           />
-                        </FormControl>
-
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="pickupTime"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Return Time</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Pickup time" {...field} />
-                        </FormControl>
-
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-                <div className="grid grid-cols-2 gap-[1.9rem] w-full ">
-                  <FormField
-                    control={form.control}
-                    name="emailAddress"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Email Address</FormLabel>
-                        <FormControl className="w-full">
-                          <Input
-                            placeholder="Email Address"
-                            className="w-full"
-                            {...field}
-                          />
-                        </FormControl>
-
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="fullname"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Fullname</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Pickup time" {...field} />
-                        </FormControl>
-
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-
-                <div className="flex items-center justify-between">
-                  <h1>Total CA $100 </h1>
-                  <div className="space-x-1">
-                    <Button className="bg-gray-100 hover:bg-gray-100 text-gray-800">
-                      Reserve
-                    </Button>
-                    <Button type="submit">Submit</Button>
-                  </div>
-                </div>
-              </form>
-            </Form>
+                        </PopoverContent>
+                      </Popover>
+                      <span className="block text-red-500">
+                        {errors.returnDate?.message}
+                      </span>
+                    </div>
+                  );
+                }}
+              />
+              <Controller
+                name="returnTime"
+                control={control}
+                render={({ field }) => {
+                  return (
+                    <Select onValueChange={field.onChange}>
+                      <SelectTrigger className="">
+                        <SelectValue placeholder="Choose return Time" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {times.map((time, index) => {
+                          return (
+                            <div className="">
+                              <SelectItem
+                                {...field}
+                                value={time}
+                                key={Math.random()}
+                              >
+                                {time}
+                              </SelectItem>
+                            </div>
+                          );
+                        })}
+                      </SelectContent>
+                      <span className="block text-red-500">
+                        {errors.returnTime?.message}
+                      </span>
+                    </Select>
+                  );
+                }}
+              />
+              <Controller
+                control={control}
+                name="emailAddress"
+                render={({ field }) => {
+                  return (
+                    <div>
+                      <Input
+                        type="email"
+                        placeholder="Your email"
+                        onChange={field.onChange}
+                      />
+                      <span className="block text-red-500">
+                        {errors.emailAddress?.message}
+                      </span>
+                    </div>
+                  );
+                }}
+              />
+              <Controller
+                control={control}
+                name="fullname"
+                render={({ field }) => {
+                  return (
+                    <div>
+                      <Input
+                        type="text"
+                        placeholder="Your fullname"
+                        onChange={field.onChange}
+                      />
+                      <span className="block text-red-500">
+                        {errors.fullname?.message}
+                      </span>
+                    </div>
+                  );
+                }}
+              />
+              <Controller
+                control={control}
+                name="address"
+                render={({ field }) => {
+                  return (
+                    <div>
+                      <Input
+                        type="text"
+                        placeholder="Your address"
+                        onChange={field.onChange}
+                      />
+                      <span className="block text-red-500">
+                        {errors.address?.message}
+                      </span>
+                    </div>
+                  );
+                }}
+              />
+              <div className="flex justify-end">
+                <Button type="submit">Book this car</Button>
+              </div>
+            </form>
           </div>
         </div>
       </div>
