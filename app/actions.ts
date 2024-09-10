@@ -151,24 +151,30 @@ export const bookVehicle = async (formData: TBooking) => {
     redirect(`${origin}`);
   }
 
-  const { error, data } = await supabase.from("bookings").insert({
-    pickup_time: pickupTime,
-    pickup_date: pickupDate,
-    return_time: returnTime,
-    return_date: returnDate,
-    total_cost: totalCost,
-    car_id: carId,
-    fullname,
-    address,
-    email: emailAddress,
-    status: 1,
-    user_id: user.data.user?.id,
-  });
+  console.log(user);
+  const res = await supabase
+    .from("bookings")
+    .insert({
+      pickup_time: pickupTime,
+      pickup_date: pickupDate,
+      return_time: returnTime,
+      return_date: returnDate,
+      total_cost: totalCost,
+      car_id: carId,
+      fullname,
+      address,
+      email: emailAddress,
+      status: 1,
+      user_id: user.data.user?.id,
+    })
+    .select();
 
+  console.log(res);
+  const { error, data } = res;
   if (error) {
     console.log(error);
     return 0;
   }
-  console.log(data);
-  redirect(`/bookings-confirmed?booking_id=$${data}`);
+  console.log(data[0]);
+  redirect(`/bookings-confirmed?booking_id=${data[0].id}`);
 };
