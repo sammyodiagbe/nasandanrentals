@@ -5,6 +5,7 @@ import { createClient } from "@/utils/supabase/server";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { TBooking, TbookingRequired } from "@/utils/types";
+import { sendEmail } from "@/utils/sendEmail";
 
 export const signUpAction = async (formData: FormData) => {
   const email = formData.get("email")?.toString();
@@ -175,6 +176,10 @@ export const bookVehicle = async (formData: TBooking) => {
     console.log(error);
     return 0;
   }
-  console.log(data[0]);
+  await sendEmail({
+    title: "Car booked Successfully",
+    message: "Your vehicle has been successfully booked",
+    email: user.data.user?.email!,
+  });
   redirect(`/bookings-confirmed?booking_id=${data[0].id}`);
 };
