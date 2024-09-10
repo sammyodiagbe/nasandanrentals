@@ -181,5 +181,5 @@ export const bookVehicle = async (formData: TBooking) => {
     message: "Your vehicle has been successfully booked",
     email: user.data.user?.email!,
   });
-  redirect(`/bookings-confirmed?booking_id=${data[0].id}`);
+  redirect(`/booking-confirmed?booking_id=${data[0].id}`);
 };
