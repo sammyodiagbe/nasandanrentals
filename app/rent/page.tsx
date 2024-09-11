@@ -1,8 +1,8 @@
 "use client";
 import { createClient } from "@/utils/supabase/client";
 import Image from "next/image";
-import { useSearchParams } from "next/navigation";
-import { useCallback, useEffect, useState } from "react";
+import { redirect, useSearchParams } from "next/navigation";
+import { MouseEventHandler, useCallback, useEffect, useState } from "react";
 import { z } from "zod";
 import {
   SubmitHandler,
@@ -30,7 +30,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { generateTime } from "@/utils/timeOptions";
-import { bookVehicle } from "../actions";
+import { bookVehicle, testStripe } from "../actions";
 import FormErrorMessage from "@/components/formErrorMessage";
 
 const formSchema = z.object({
@@ -83,6 +83,20 @@ const RentPage = () => {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     await bookVehicle({ ...formData, carId: parseInt(carId!), totalCost: 200 });
+  };
+
+  const makePurchase: MouseEventHandler<HTMLButtonElement> = async (event) => {
+    event.preventDefault();
+
+    const redirecturl: string | null = await testStripe({
+      name: car?.name,
+      price: car.price,
+    });
+
+    console.log(redirecturl);
+    if (redirecturl) {
+      window.location.href = redirecturl;
+    }
   };
 
   const bookAction = (formData: FormData) => {
@@ -317,6 +331,7 @@ const RentPage = () => {
                   <Button
                     type="button"
                     disabled={isSubmitting}
+                    onClick={makePurchase}
                     className="bg-gray-100 hover:bg-gray-200 text-foreground"
                   >
                     Reserve

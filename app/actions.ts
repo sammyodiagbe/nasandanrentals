@@ -6,6 +6,8 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { TBooking, TbookingRequired } from "@/utils/types";
 import { sendEmail } from "@/utils/sendEmail";
+import { stripeClient } from "@/utils/stripe";
+import Stripe from "stripe";
 
 export const signUpAction = async (formData: FormData) => {
   const email = formData.get("email")?.toString();
@@ -182,4 +184,35 @@ export const bookVehicle = async (formData: TBooking) => {
     email: user.data.user?.email!,
   });
   redirect(`/booking-confirmed?booking_id=${data[0].id}`);
+};
+
+export const testStripe = async (data: { name: string; price: number }) => {
+  const { name, price } = data;
+  const { data: products } = await stripeClient.products.list();
+  let url: string | null = null;
+  let product: Stripe.Product;
+
+  product = products.find((product) => product.name === name) as Stripe.Product;
+
+  if (!product) {
+    // creates a product
+    product = await stripeClient.products.create({
+      name: name,
+      default_price_data: {
+        currency: "cad",
+        unit_amount: price * 100,
+      },
+    });
+  }
+
+  // then we try to sell the product
+  const session = await stripeClient.checkout.sessions.create({
+    line_items: [{ quantity: 1, price: product.default_price as string }],
+    mode: "payment",
+    success_url: `http://localhost:3000/payment-successful?session_id=$[CHECKOUT_SESSION_ID}`,
+  });
+
+  url = session.url as string | null;
+
+  return url;
 };
