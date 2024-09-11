@@ -194,13 +194,15 @@ export const testStripe = async (data: { name: string; price: number }) => {
 
   product = products.find((product) => product.name === name) as Stripe.Product;
 
+  console.log(!product);
+
   if (!product) {
     // creates a product
     product = await stripeClient.products.create({
       name: name,
       default_price_data: {
         currency: "cad",
-        unit_amount: price * 100,
+        unit_amount: Math.round((price + (price * 0.029 + 0.3)) * 100),
       },
     });
   }
