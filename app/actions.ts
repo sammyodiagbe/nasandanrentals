@@ -209,7 +209,7 @@ export const testStripe = async (data: { name: string; price: number }) => {
   const session = await stripeClient.checkout.sessions.create({
     line_items: [{ quantity: 1, price: product.default_price as string }],
     mode: "payment",
-    success_url: `http://localhost:3000/payment-successful?session_id=$[CHECKOUT_SESSION_ID}`,
+    success_url: `http://localhost:3000/payment-successful?session_id={CHECKOUT_SESSION_ID}`,
   });
 
   url = session.url as string | null;
