@@ -12,6 +12,8 @@ import { useEffect, useState } from "react";
 import { getUserBookings } from "../actions";
 import { format } from "date-fns";
 import { combineDateAndTime } from "@/utils/dateFormat";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 const BookingsPage = () => {
   const [bookings, setBookings] = useState<any[] | null>(null);
@@ -58,23 +60,23 @@ const BookingsPage = () => {
       </div>
 
       <div className="mt-5">
-        <Table>
-          <TableCaption>A list of your recent bookings.</TableCaption>
-          <TableHeader>
-            <TableRow>
-              <TableHead className="w-[100px]">Car name</TableHead>
-              <TableHead>Price ($)</TableHead>
-              <TableHead>Pickup date</TableHead>
-              <TableHead>Pickup Time</TableHead>
-              <TableHead className="t">Return date</TableHead>
-              <TableHead className="t">Return time</TableHead>
-              <TableHead className="t">Total Cost ($)</TableHead>
-              <TableHead className="t">Status</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {bookings ? (
-              bookings.map((booking, index) => {
+        {bookings && bookings.length ? (
+          <Table>
+            <TableCaption>A list of your recent bookings.</TableCaption>
+            <TableHeader>
+              <TableRow>
+                <TableHead className="w-[100px]">Car name</TableHead>
+                <TableHead>Price ($)</TableHead>
+                <TableHead>Pickup date</TableHead>
+                <TableHead>Pickup Time</TableHead>
+                <TableHead className="t">Return date</TableHead>
+                <TableHead className="t">Return time</TableHead>
+                <TableHead className="t">Total Cost ($)</TableHead>
+                <TableHead className="t">Status</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {bookings?.map((booking, index) => {
                 const {
                   cars: { name, price },
                   pickup_date,
@@ -101,12 +103,21 @@ const BookingsPage = () => {
                     <TableCell className="">Completed</TableCell>
                   </TableRow>
                 );
-              })
-            ) : (
-              <h1>NO bookings found</h1>
-            )}
-          </TableBody>
-        </Table>
+              })}
+            </TableBody>
+          </Table>
+        ) : (
+          <div className="flex items-center justify-center flex-col gap-2 text-gray-800 w-[400px] text-center mt-5 mx-auto">
+            <h1 className="text-xl font-bold">
+              Oh no, you have no booking yet
+            </h1>
+            <Link className="" href="/collections">
+              <Button className="bg-green-500 hover:bg-green-600">
+                Book a car now
+              </Button>
+            </Link>
+          </div>
+        )}
       </div>
     </main>
   );
