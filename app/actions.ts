@@ -8,6 +8,8 @@ import { TBooking, TbookingRequired } from "@/utils/types";
 import { sendEmail } from "@/utils/sendEmail";
 import { stripeClient } from "@/utils/stripe";
 import Stripe from "stripe";
+import { SupabaseAuthClient } from "@supabase/supabase-js/dist/module/lib/SupabaseAuthClient";
+import { UserResponse } from "@supabase/supabase-js";
 
 export const signUpAction = async (formData: FormData) => {
   const email = formData.get("email")?.toString();
@@ -53,7 +55,7 @@ export const signInAction = async (formData: FormData) => {
     return encodedRedirect("error", "/sign-in", error.message);
   }
 
-  return redirect("/protected");
+  return redirect("/");
 };
 
 export const forgotPasswordAction = async (formData: FormData) => {
@@ -67,7 +69,7 @@ export const forgotPasswordAction = async (formData: FormData) => {
   }
 
   const { error } = await supabase.auth.resetPasswordForEmail(email, {
-    redirectTo: `${origin}/auth/callback?redirect_to=/protected/reset-password`,
+    redirectTo: `${origin}/auth/callback?redirect_to=/reset-password`,
   });
 
   if (error) {
@@ -99,17 +101,13 @@ export const resetPasswordAction = async (formData: FormData) => {
   if (!password || !confirmPassword) {
     encodedRedirect(
       "error",
-      "/protected/reset-password",
+      "/reset-password",
       "Password and confirm password are required"
     );
   }
 
   if (password !== confirmPassword) {
-    encodedRedirect(
-      "error",
-      "/protected/reset-password",
-      "Passwords do not match"
-    );
+    encodedRedirect("error", "/reset-password", "Passwords do not match");
   }
 
   const { error } = await supabase.auth.updateUser({
@@ -117,14 +115,10 @@ export const resetPasswordAction = async (formData: FormData) => {
   });
 
   if (error) {
-    encodedRedirect(
-      "error",
-      "/protected/reset-password",
-      "Password update failed"
-    );
+    encodedRedirect("error", "/reset-password", "Password update failed");
   }
 
-  encodedRedirect("success", "/protected/reset-password", "Password updated");
+  encodedRedirect("success", "/reset-password", "Password updated");
 };
 
 export const signOutAction = async () => {
@@ -189,11 +183,13 @@ export const bookVehicle = async (formData: TBooking) => {
 export const testStripe = async (data: { name: string; price: number }) => {
   const { name, price } = data;
   const { data: products } = await stripeClient.products.list();
+
+  console.log(products);
   let url: string | null = null;
   let product: Stripe.Product;
 
   product = products.find((product) => product.name === name) as Stripe.Product;
-
+  console.log("product: ", product.default_price);
   console.log(!product);
 
   if (!product) {
@@ -211,10 +207,29 @@ export const testStripe = async (data: { name: string; price: number }) => {
   const session = await stripeClient.checkout.sessions.create({
     line_items: [{ quantity: 1, price: product.default_price as string }],
     mode: "payment",
-    success_url: `http://localhost:3000/payment-successful?session_id={CHECKOUT_SESSION_ID}`,
+    success_url: `http://localhost:3000/payment-successful?session_id={CHECKOUT_SESSION_ID}&car_name=${name}`,
   });
 
   url = session.url as string | null;
 
   return url;
+};
+
+export const getUserBookings = async () => {
+  const supabase = createClient();
+
+  const {
+    data: { user },
+  }: UserResponse = await supabase.auth.getUser();
+
+  if (!user) return null;
+
+  const { data: bookings, error } = await supabase
+    .from("bookings")
+    .select(
+      "created_at, pickup_date,total_cost, pickup_time, return_date, return_time, id, cars (name, price)"
+    )
+    .eq("user_id", user.id);
+
+  return bookings;
 };

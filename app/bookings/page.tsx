@@ -1,3 +1,4 @@
+"use client";
 import {
   Table,
   TableBody,
@@ -7,8 +8,24 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { createClient } from "@/utils/supabase/client";
+import { useEffect, useState } from "react";
+import { getUserBookings } from "../actions";
+import { format } from "date-fns";
+import { combineDateAndTime } from "@/utils/dateFormat";
 
 const BookingsPage = () => {
+  const [bookings, setBookings] = useState<any[] | null>(null);
+
+  useEffect(() => {
+    fetchUserBookings();
+  }, []);
+
+  const fetchUserBookings = async () => {
+    const bookings = await getUserBookings();
+    console.log(bookings);
+    setBookings(bookings);
+  };
   return (
     <main className="lg:container py-8">
       <div className="mb-8 space-y-2">
@@ -47,38 +64,48 @@ const BookingsPage = () => {
           <TableHeader>
             <TableRow>
               <TableHead className="w-[100px]">Car name</TableHead>
-              <TableHead>Price</TableHead>
+              <TableHead>Price ($)</TableHead>
               <TableHead>Pickup date</TableHead>
-              <TableHead className="text-right">Return date</TableHead>
-              <TableHead className="text-right">Return time</TableHead>
-              <TableHead className="text-right">Status</TableHead>
+              <TableHead>Pickup Time</TableHead>
+              <TableHead className="t">Return date</TableHead>
+              <TableHead className="t">Return time</TableHead>
+              <TableHead className="t">Total Cost ($)</TableHead>
+              <TableHead className="t">Status</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            <TableRow>
-              <TableCell className="w-[250px]">2019 Chevy Malibu</TableCell>
-              <TableCell>$78</TableCell>
-              <TableCell>July 17, 2024</TableCell>
-              <TableCell className="text-right">July 31, 2024</TableCell>
-              <TableCell className="text-right">3:45pm</TableCell>
-              <TableCell className="text-right">Completed</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell className="w-[250px]">2019 Chevy Malibu</TableCell>
-              <TableCell>$78</TableCell>
-              <TableCell>July 17, 2024</TableCell>
-              <TableCell className="text-right">July 31, 2024</TableCell>
-              <TableCell className="text-right">3:45pm</TableCell>
-              <TableCell className="text-right">Completed</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell className="w-[250px]">2019 Chevy Malibu</TableCell>
-              <TableCell>$78</TableCell>
-              <TableCell>July 17, 2024</TableCell>
-              <TableCell className="text-right">July 31, 2024</TableCell>
-              <TableCell className="text-right">3:45pm</TableCell>
-              <TableCell className="text-right">Completed</TableCell>
-            </TableRow>
+            {bookings ? (
+              bookings.map((booking, index) => {
+                const {
+                  cars: { name, price },
+                  pickup_date,
+                  pickup_time,
+                  total_cost,
+                  return_date,
+                  return_time,
+                } = booking;
+                return (
+                  <TableRow key={index}>
+                    <TableCell className="w-[250px]">{name}</TableCell>
+                    <TableCell>{price}</TableCell>
+                    <TableCell>{format(pickup_date, "PPP")}</TableCell>
+                    <TableCell className="">
+                      {combineDateAndTime(pickup_date, pickup_time)}
+                    </TableCell>
+                    <TableCell className="">
+                      {format(return_date, "PPP")}
+                    </TableCell>
+                    <TableCell className="">
+                      {combineDateAndTime(return_date, return_time)}
+                    </TableCell>
+                    <TableCell className="">{total_cost}</TableCell>
+                    <TableCell className="">Completed</TableCell>
+                  </TableRow>
+                );
+              })
+            ) : (
+              <h1>NO bookings found</h1>
+            )}
           </TableBody>
         </Table>
       </div>
