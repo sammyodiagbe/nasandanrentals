@@ -8,7 +8,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { createClient } from "@/utils/supabase/client";
 import { useEffect, useState } from "react";
 import { getUserBookings } from "../actions";
 import { format } from "date-fns";
