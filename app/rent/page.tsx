@@ -329,14 +329,6 @@ const RentPage = () => {
                 <h2>Total CA $ 100</h2>
                 <div className="space-x-4">
                   <Button
-                    type="button"
-                    disabled={isSubmitting}
-                    onClick={makePurchase}
-                    className="bg-gray-100 hover:bg-gray-200 text-foreground"
-                  >
-                    Reserve
-                  </Button>
-                  <Button
                     type="submit"
                     disabled={isSubmitting}
                     className="bg-green-500 hover:bg-green-500"
