@@ -45,7 +45,9 @@ const BookingsPage = () => {
   return (
     <main className="lg:container py-8">
       <div className="mb-8 space-y-2">
-        <h1 className="text-5xl font-bold text-gray-800">Hi, {user?.email}.</h1>
+        <h1 className="text-5xl font-bold text-gray-800">
+          Hi, {user?.user_metadata.first_name | user?.user_metadata.name}.
+        </h1>
         <h1>Your bookings</h1>
       </div>
 

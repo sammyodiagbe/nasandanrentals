@@ -14,6 +14,7 @@ import { UserResponse } from "@supabase/supabase-js";
 export const signUpAction = async (formData: FormData) => {
   const email = formData.get("email")?.toString();
   const password = formData.get("password")?.toString();
+  const name = formData.get("name")?.toString();
   const supabase = createClient();
   const origin = headers().get("origin");
 
@@ -25,9 +26,9 @@ export const signUpAction = async (formData: FormData) => {
     email,
     password,
     options: {
-      emailRedirectTo: `${origin}/auth/callback`,
+      emailRedirectTo: `${origin}`,
       data: {
-        first_name: "",
+        first_name: name,
       },
     },
   });
