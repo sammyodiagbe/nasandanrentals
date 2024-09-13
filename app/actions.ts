@@ -26,6 +26,9 @@ export const signUpAction = async (formData: FormData) => {
     password,
     options: {
       emailRedirectTo: `${origin}/auth/callback`,
+      data: {
+        first_name: "",
+      },
     },
   });
 
@@ -247,5 +250,17 @@ export const SignupWithGoogle = async () => {
   console.log(data.url);
   if (data?.url) {
     redirect(data.url);
+  }
+};
+
+export const exchangeCodeForSession = async (code: string) => {
+  const supabase = createClient();
+  const origin = headers().get("Origin");
+  const {
+    data: { user },
+    error,
+  } = await supabase.auth.exchangeCodeForSession(code);
+  if (!error) {
+    redirect(`${origin}`);
   }
 };

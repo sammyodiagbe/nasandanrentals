@@ -1,10 +1,23 @@
+"use client";
 import CustomButton from "@/components/app-components/button";
 import Testimonials from "@/components/home/customersReview";
 import WhyChooseUsComponent from "@/components/home/whychooseus";
 import Image from "next/image";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
+import { useEffect } from "react";
+import { exchangeCodeForSession } from "./actions";
 
 export default async function Index() {
+  const params = useSearchParams();
+  const code = params.get("code");
+
+  useEffect(() => {
+    if (code) {
+      // exchange code for a session and redirect user back to this page
+      exchangeCodeForSession(code);
+    }
+  }, []);
   return (
     <>
       <main className="flex-1 flex flex-col gap-6 px-4 lg:container">
