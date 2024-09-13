@@ -1,10 +1,14 @@
-import { signUpAction } from "@/app/actions";
+"use client";
+import { signUpAction, SignupWithGoogle } from "@/app/actions";
 import { FormMessage, Message } from "@/components/form-message";
 import { SubmitButton } from "@/components/submit-button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
 import { SmtpMessage } from "../smtp-message";
+import { Button } from "@/components/ui/button";
+import { createClient } from "@/utils/supabase/server";
+import { headers } from "next/headers";
 
 export default function Signup({ searchParams }: { searchParams: Message }) {
   if ("message" in searchParams) {
@@ -36,7 +40,23 @@ export default function Signup({ searchParams }: { searchParams: Message }) {
             minLength={6}
             required
           />
-          <SubmitButton formAction={signUpAction} pendingText="Signing up...">
+          <div className="">
+            <Button
+              variant={"outline"}
+              type="button"
+              className="w-full"
+              onClick={() => {
+                SignupWithGoogle();
+              }}
+            >
+              Signup with Google
+            </Button>
+          </div>
+          <SubmitButton
+            type="submit"
+            formAction={signUpAction}
+            pendingText="Signing up..."
+          >
             Sign up
           </SubmitButton>
           <FormMessage message={searchParams} />

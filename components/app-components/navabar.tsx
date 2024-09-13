@@ -1,6 +1,12 @@
+"use client";
 import Link from "next/link";
+import { Button } from "../ui/button";
+import { signOutAction } from "@/app/actions";
 
 const Navbar = () => {
+  const signOut = async () => {
+    await signOutAction();
+  };
   return (
     <nav className=" p-4  sticky top-0 bg-white z-10">
       <div className="lg:container flex justify-between items-center">
@@ -19,6 +25,11 @@ const Navbar = () => {
             </li>
             <li>
               <Link href={"/contact-us"}>Contact us</Link>
+            </li>
+            <li>
+              <Button className="" variant={"secondary"} onClick={signOut}>
+                Logout
+              </Button>
             </li>
           </ul>
         </div>

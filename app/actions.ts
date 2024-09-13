@@ -233,3 +233,19 @@ export const getUserBookings = async () => {
 
   return bookings;
 };
+
+export const SignupWithGoogle = async () => {
+  console.log("checking");
+  const supabase = createClient();
+  const origin = headers().get("origin");
+  const { data } = await supabase.auth.signInWithOAuth({
+    provider: "google",
+    // options: {
+    //   redirectTo: `${origin}`,
+    // },
+  });
+  console.log(data.url);
+  if (data?.url) {
+    redirect(data.url);
+  }
+};

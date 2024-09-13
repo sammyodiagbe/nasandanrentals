@@ -14,13 +14,28 @@ import { format } from "date-fns";
 import { combineDateAndTime } from "@/utils/dateFormat";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { User, UserResponse } from "@supabase/supabase-js";
+import { createClient } from "@/utils/supabase/client";
 
 const BookingsPage = () => {
   const [bookings, setBookings] = useState<any[] | null>(null);
+  const [user, setUser] = useState<User | null>();
+  const supabase = createClient();
 
   useEffect(() => {
+    fetchUser();
     fetchUserBookings();
   }, []);
+
+  const fetchUser = async () => {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    console.log(user);
+    if (user) {
+      setUser(user);
+    }
+  };
 
   const fetchUserBookings = async () => {
     const bookings = await getUserBookings();
@@ -30,7 +45,7 @@ const BookingsPage = () => {
   return (
     <main className="lg:container py-8">
       <div className="mb-8 space-y-2">
-        <h1 className="text-5xl font-bold text-gray-800">Hi, Devan.</h1>
+        <h1 className="text-5xl font-bold text-gray-800">Hi, {user?.email}.</h1>
         <h1>Your bookings</h1>
       </div>
 
