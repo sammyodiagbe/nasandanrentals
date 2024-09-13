@@ -28,7 +28,7 @@ export const signUpAction = async (formData: FormData) => {
     options: {
       emailRedirectTo: `${origin}`,
       data: {
-        first_name: name,
+        full_name: name,
       },
     },
   });
