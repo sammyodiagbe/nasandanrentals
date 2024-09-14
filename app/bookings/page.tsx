@@ -14,7 +14,7 @@ import { format } from "date-fns";
 import { combineDateAndTime } from "@/utils/dateFormat";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { User, UserResponse } from "@supabase/supabase-js";
+import { User } from "@supabase/supabase-js";
 import { createClient } from "@/utils/supabase/client";
 
 const BookingsPage = () => {

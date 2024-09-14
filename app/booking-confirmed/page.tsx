@@ -2,8 +2,8 @@ import { Button } from "@/components/ui/button";
 
 const BookingConfirmed = () => {
   return (
-    <main className=" lg:container space-y-5">
-      <div className="w-[550px] space-y-4 py-4">
+    <main className=" lg:container space-y-5 ">
+      <div className="w-[550px] space-y-4 py-4 mx-auto">
         <h1 className="text-5xl font-bold">Thank you</h1>
         <p>
           Your booking has been reserved, please confirm booking or click on pay
