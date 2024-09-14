@@ -27,7 +27,7 @@ const Navbar = () => {
               <Link href={"/contact-us"}>Contact us</Link>
             </li>
             <li>
-              <Button className="" variant={"secondary"} onClick={signOut}>
+              <Button className="" variant={"outline"} onClick={signOut}>
                 Logout
               </Button>
             </li>
