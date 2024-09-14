@@ -100,6 +100,7 @@ const BookingsPage = () => {
                   total_cost,
                   return_date,
                   return_time,
+                  status,
                 } = booking;
                 return (
                   <TableRow key={index}>
@@ -116,7 +117,7 @@ const BookingsPage = () => {
                       {combineDateAndTime(return_date, return_time)}
                     </TableCell>
                     <TableCell className="">{total_cost}</TableCell>
-                    <TableCell className="">Completed</TableCell>
+                    <TableCell className="">{status}</TableCell>
                   </TableRow>
                 );
               })}

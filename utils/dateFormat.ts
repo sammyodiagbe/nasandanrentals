@@ -1,3 +1,5 @@
+import { differenceInDays } from "date-fns";
+
 export function combineDateAndTime(timestamp: string, timeOfDay: string) {
   // Extract date part (YYYY-MM-DD) from the timestamp
   const datePart = timestamp.split("T")[0];
@@ -16,4 +18,24 @@ export function combineDateAndTime(timestamp: string, timeOfDay: string) {
   });
 
   return formattedTime;
+}
+
+export function getNumberOfDays(
+  pickupDate: string,
+  pickupTime: string,
+  returnDate: string,
+  returnTime: string
+) {
+  const pickupD = pickupDate.split("T")[0];
+  const returnD = returnDate.split("T")[0];
+
+  // Combine the date with the provided time of day
+  const pickupDateTime = `${pickupD}T${pickupTime}`;
+  const returnDateTime = `${returnD}T${returnTime}`;
+
+  // Create the new Date object
+  const pickupdateObject = new Date(pickupDateTime);
+  const returnDateObject = new Date(returnDateTime);
+
+  return differenceInDays(pickupdateObject, returnDateObject);
 }
