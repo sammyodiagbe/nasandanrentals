@@ -231,7 +231,7 @@ export const getUserBookings = async () => {
   const { data: bookings, error } = await supabase
     .from("bookings")
     .select(
-      "created_at, pickup_date,total_cost, pickup_time, return_date, return_time, id, cars (name, price)"
+      "created_at,status, pickup_date,total_cost, pickup_time, return_date, return_time, id, cars (name, price)"
     )
     .eq("user_id", user.id);
 

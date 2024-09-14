@@ -16,6 +16,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { User } from "@supabase/supabase-js";
 import { createClient } from "@/utils/supabase/client";
+import { cn } from "@/lib/utils";
 
 const BookingsPage = () => {
   const [bookings, setBookings] = useState<any[] | null>(null);
@@ -93,6 +94,7 @@ const BookingsPage = () => {
             </TableHeader>
             <TableBody>
               {bookings?.map((booking, index) => {
+                console.log(booking);
                 const {
                   cars: { name, price },
                   pickup_date,
@@ -117,7 +119,16 @@ const BookingsPage = () => {
                       {combineDateAndTime(return_date, return_time)}
                     </TableCell>
                     <TableCell className="">{total_cost}</TableCell>
-                    <TableCell className="">{status}</TableCell>
+                    <TableCell className="">
+                      <span
+                        className={cn(
+                          "p-1 px-4 bg-gray-300 text-black rounded-full",
+                          status === "completed" && "bg-green-500 text-white"
+                        )}
+                      >
+                        {status}
+                      </span>
+                    </TableCell>
                   </TableRow>
                 );
               })}
