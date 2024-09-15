@@ -2,15 +2,62 @@
 import Link from "next/link";
 import { Button } from "../ui/button";
 import { signOutAction } from "@/app/actions";
+import { createClient } from "@/utils/supabase/client";
+import { useEffect, useState } from "react";
+import { User } from "@supabase/supabase-js";
+import { redirect, useRouter } from "next/navigation";
 
 const Navbar = () => {
+  const supabase = createClient();
+  const [user, setUser] = useState<User | null>(null);
+  const router = useRouter();
+
+  useEffect(() => {
+    const getSession = async () => {
+      const {
+        data: { session },
+        error,
+      } = await supabase.auth.getSession();
+      if (error) console.error("Error fetching session:", error);
+      setUser(session?.user ?? null);
+    };
+
+    getSession();
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((event, session) => {
+      if (
+        session &&
+        (event === "SIGNED_IN" ||
+          event === "TOKEN_REFRESHED" ||
+          event === "USER_UPDATED")
+      ) {
+        setUser(session.user);
+      }
+
+      if (event === "SIGNED_OUT") {
+        setUser(null);
+      }
+    });
+
+    console.log("mounted");
+
+    return () => {
+      subscription.unsubscribe();
+      console.log("Unmounted");
+    };
+  }, []);
   const signOut = async () => {
     await signOutAction();
+    setUser(null);
+    router.push("/sign-in");
   };
   return (
     <nav className=" p-4  sticky top-0 bg-white z-10">
       <div className="lg:container flex justify-between items-center">
-        <h1 className="font-bold text-xl">Nasandan</h1>
+        <h1 className="font-bold text-xl">
+          <Link href={"/"}>Nasandan</Link>
+        </h1>
 
         <div className="navigation">
           <ul className="flex items-center gap-4 text-sm">
@@ -23,11 +70,17 @@ const Navbar = () => {
             <li>
               <Link href={"/bookings"}>Bookings</Link>
             </li>
-
+            {user?.user_metadata.full_name}
             <li>
-              <Button className="" variant={"outline"} onClick={signOut}>
-                Logout
-              </Button>
+              {user ? (
+                <Button className="" variant={"outline"} onClick={signOut}>
+                  Logout
+                </Button>
+              ) : (
+                <Link href={"/sign-in"}>
+                  <Button variant={"outline"}>Sign in</Button>
+                </Link>
+              )}
             </li>
           </ul>
         </div>
