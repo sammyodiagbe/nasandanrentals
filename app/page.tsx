@@ -90,8 +90,4 @@ const Index = function () {
   );
 };
 
-export default function Page() {
-  <Suspense>
-    <Index />
-  </Suspense>;
-}
+export default Index;

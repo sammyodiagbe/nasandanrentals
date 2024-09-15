@@ -110,80 +110,152 @@ const RentPage = () => {
   };
   return (
     <main className="lg:container py-4">
-      <Suspense>
-        <h1 className="font-medium text-3xl mb-5 ">
-          <span className="text-md text-gray-800">Rent</span> {car && car.name}
-        </h1>
-        <div className="flex gap-[1.9rem]">
-          <div className="flex items-center justify-center w-[40.625rem] min-h-[25rem] flex-shrink-0 bg-gray-100 rounded-sm">
-            <Image
-              src={car?.image_url}
-              alt="Rent this car today"
-              height={500}
-              width={500}
-            />
-          </div>
-          <div className="flex-1">
-            <h1>Rent Details</h1>
-            <div className="">
-              <form
-                onSubmit={handleSubmit(book)}
-                className="space-y-3"
-                action={bookAction}
-              >
-                <div className="grid grid-cols-2 gap-[1.9rem]">
-                  <Controller
-                    control={control}
-                    name="pickupDate"
-                    render={({ field }) => {
-                      return (
-                        <div>
-                          <Popover>
-                            <PopoverTrigger asChild>
-                              <Button
-                                variant={"outline"}
-                                className={cn(
-                                  "w-full justify-start text-left font-normal"
-                                )}
-                              >
-                                <CalendarIcon className="mr-2 h-4 w-4" />
-                                <span>
-                                  {field.value
-                                    ? format(field.value, "PPP")
-                                    : "Select pickup date"}
-                                </span>
-                              </Button>
-                            </PopoverTrigger>
-                            <PopoverContent className="w-auto p-0">
-                              <Calendar
-                                mode="single"
-                                selected={field.value}
-                                {...field}
-                                onDayClick={field.onChange}
-                              />
-                            </PopoverContent>
-                          </Popover>
-                          <FormErrorMessage
-                            message={errors.pickupDate?.message}
-                          />
-                        </div>
-                      );
-                    }}
-                  />
+      <h1 className="font-medium text-3xl mb-5 ">
+        <span className="text-md text-gray-800">Rent</span> {car && car.name}
+      </h1>
+      <div className="flex gap-[1.9rem]">
+        <div className="flex items-center justify-center w-[40.625rem] min-h-[25rem] flex-shrink-0 bg-gray-100 rounded-sm">
+          <Image
+            src={car?.image_url}
+            alt="Rent this car today"
+            height={500}
+            width={500}
+          />
+        </div>
+        <div className="flex-1">
+          <h1>Rent Details</h1>
+          <div className="">
+            <form
+              onSubmit={handleSubmit(book)}
+              className="space-y-3"
+              action={bookAction}
+            >
+              <div className="grid grid-cols-2 gap-[1.9rem]">
+                <Controller
+                  control={control}
+                  name="pickupDate"
+                  render={({ field }) => {
+                    return (
+                      <div>
+                        <Popover>
+                          <PopoverTrigger asChild>
+                            <Button
+                              variant={"outline"}
+                              className={cn(
+                                "w-full justify-start text-left font-normal"
+                              )}
+                            >
+                              <CalendarIcon className="mr-2 h-4 w-4" />
+                              <span>
+                                {field.value
+                                  ? format(field.value, "PPP")
+                                  : "Select pickup date"}
+                              </span>
+                            </Button>
+                          </PopoverTrigger>
+                          <PopoverContent className="w-auto p-0">
+                            <Calendar
+                              mode="single"
+                              selected={field.value}
+                              {...field}
+                              onDayClick={field.onChange}
+                            />
+                          </PopoverContent>
+                        </Popover>
+                        <FormErrorMessage
+                          message={errors.pickupDate?.message}
+                        />
+                      </div>
+                    );
+                  }}
+                />
 
-                  <Controller
-                    name="pickupTime"
-                    control={control}
-                    render={({ field }) => {
-                      return (
-                        <div className="w-full">
-                          <Select onValueChange={field.onChange}>
-                            <SelectTrigger className="">
-                              <SelectValue placeholder="Choose Pickup Time" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              {times.map((time, index) => {
-                                return (
+                <Controller
+                  name="pickupTime"
+                  control={control}
+                  render={({ field }) => {
+                    return (
+                      <div className="w-full">
+                        <Select onValueChange={field.onChange}>
+                          <SelectTrigger className="">
+                            <SelectValue placeholder="Choose Pickup Time" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {times.map((time, index) => {
+                              return (
+                                <SelectItem
+                                  {...field}
+                                  value={time}
+                                  key={Math.random()}
+                                  className="w-full"
+                                >
+                                  {time}
+                                </SelectItem>
+                              );
+                            })}
+                          </SelectContent>
+                        </Select>
+                        <FormErrorMessage
+                          message={errors.pickupTime?.message}
+                        />
+                      </div>
+                    );
+                  }}
+                />
+              </div>
+              <div className="grid grid-cols-2 gap-[1.9rem">
+                <Controller
+                  control={control}
+                  name="returnDate"
+                  render={({ field }) => {
+                    return (
+                      <div>
+                        <Popover>
+                          <PopoverTrigger asChild>
+                            <Button
+                              variant={"outline"}
+                              className={cn(
+                                "w-full justify-start text-left font-normal"
+                              )}
+                            >
+                              <CalendarIcon className="mr-2 h-4 w-4" />
+                              <span>
+                                {field.value
+                                  ? format(field.value, "PPP")
+                                  : "Select return date"}
+                              </span>
+                            </Button>
+                          </PopoverTrigger>
+                          <PopoverContent className="w-auto p-0">
+                            <Calendar
+                              mode="single"
+                              selected={field.value}
+                              {...field}
+                              onDayClick={field.onChange}
+                            />
+                          </PopoverContent>
+                        </Popover>
+                        <FormErrorMessage
+                          message={errors.returnDate?.message}
+                        />
+                      </div>
+                    );
+                  }}
+                />
+                <Controller
+                  name="returnTime"
+                  control={control}
+                  render={({ field }) => {
+                    return (
+                      <div>
+                        <Select onValueChange={field.onChange}>
+                          <SelectTrigger className="">
+                            <SelectValue placeholder="Choose return Time" />
+                          </SelectTrigger>
+                          <SelectContent className="w-full">
+                            {times.map((time, index) => {
+                              return (
+                                <div className="">
                                   <SelectItem
                                     {...field}
                                     value={time}
@@ -192,165 +264,89 @@ const RentPage = () => {
                                   >
                                     {time}
                                   </SelectItem>
-                                );
-                              })}
-                            </SelectContent>
-                          </Select>
-                          <FormErrorMessage
-                            message={errors.pickupTime?.message}
-                          />
-                        </div>
-                      );
-                    }}
-                  />
+                                </div>
+                              );
+                            })}
+                          </SelectContent>
+                        </Select>
+                        <FormErrorMessage
+                          message={errors.returnTime?.message}
+                        />
+                      </div>
+                    );
+                  }}
+                />
+              </div>
+              <div className="grid grid-cols-2 gap-[1.9rem]">
+                <Controller
+                  control={control}
+                  name="emailAddress"
+                  render={({ field }) => {
+                    return (
+                      <div>
+                        <Input
+                          type="email"
+                          placeholder="Your email"
+                          onChange={field.onChange}
+                        />
+                        <FormErrorMessage
+                          message={errors.emailAddress?.message}
+                        />
+                      </div>
+                    );
+                  }}
+                />
+                <Controller
+                  control={control}
+                  name="fullname"
+                  render={({ field }) => {
+                    return (
+                      <div>
+                        <Input
+                          type="text"
+                          placeholder="Your fullname"
+                          onChange={field.onChange}
+                        />
+                        <FormErrorMessage message={errors.fullname?.message} />
+                      </div>
+                    );
+                  }}
+                />
+              </div>
+              <div className="">
+                <Controller
+                  control={control}
+                  name="address"
+                  render={({ field }) => {
+                    return (
+                      <div>
+                        <Input
+                          type="text"
+                          placeholder="Your address"
+                          onChange={field.onChange}
+                        />
+                        <FormErrorMessage message={errors.address?.message} />
+                      </div>
+                    );
+                  }}
+                />
+              </div>
+              <div className="flex justify-between items-center">
+                <h2>Total CA $ 100</h2>
+                <div className="space-x-4">
+                  <Button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="bg-green-500 hover:bg-green-500"
+                  >
+                    Book this car
+                  </Button>
                 </div>
-                <div className="grid grid-cols-2 gap-[1.9rem">
-                  <Controller
-                    control={control}
-                    name="returnDate"
-                    render={({ field }) => {
-                      return (
-                        <div>
-                          <Popover>
-                            <PopoverTrigger asChild>
-                              <Button
-                                variant={"outline"}
-                                className={cn(
-                                  "w-full justify-start text-left font-normal"
-                                )}
-                              >
-                                <CalendarIcon className="mr-2 h-4 w-4" />
-                                <span>
-                                  {field.value
-                                    ? format(field.value, "PPP")
-                                    : "Select return date"}
-                                </span>
-                              </Button>
-                            </PopoverTrigger>
-                            <PopoverContent className="w-auto p-0">
-                              <Calendar
-                                mode="single"
-                                selected={field.value}
-                                {...field}
-                                onDayClick={field.onChange}
-                              />
-                            </PopoverContent>
-                          </Popover>
-                          <FormErrorMessage
-                            message={errors.returnDate?.message}
-                          />
-                        </div>
-                      );
-                    }}
-                  />
-                  <Controller
-                    name="returnTime"
-                    control={control}
-                    render={({ field }) => {
-                      return (
-                        <div>
-                          <Select onValueChange={field.onChange}>
-                            <SelectTrigger className="">
-                              <SelectValue placeholder="Choose return Time" />
-                            </SelectTrigger>
-                            <SelectContent className="w-full">
-                              {times.map((time, index) => {
-                                return (
-                                  <div className="">
-                                    <SelectItem
-                                      {...field}
-                                      value={time}
-                                      key={Math.random()}
-                                      className="w-full"
-                                    >
-                                      {time}
-                                    </SelectItem>
-                                  </div>
-                                );
-                              })}
-                            </SelectContent>
-                          </Select>
-                          <FormErrorMessage
-                            message={errors.returnTime?.message}
-                          />
-                        </div>
-                      );
-                    }}
-                  />
-                </div>
-                <div className="grid grid-cols-2 gap-[1.9rem]">
-                  <Controller
-                    control={control}
-                    name="emailAddress"
-                    render={({ field }) => {
-                      return (
-                        <div>
-                          <Input
-                            type="email"
-                            placeholder="Your email"
-                            onChange={field.onChange}
-                          />
-                          <FormErrorMessage
-                            message={errors.emailAddress?.message}
-                          />
-                        </div>
-                      );
-                    }}
-                  />
-                  <Controller
-                    control={control}
-                    name="fullname"
-                    render={({ field }) => {
-                      return (
-                        <div>
-                          <Input
-                            type="text"
-                            placeholder="Your fullname"
-                            onChange={field.onChange}
-                          />
-                          <FormErrorMessage
-                            message={errors.fullname?.message}
-                          />
-                        </div>
-                      );
-                    }}
-                  />
-                </div>
-                <div className="">
-                  <Controller
-                    control={control}
-                    name="address"
-                    render={({ field }) => {
-                      return (
-                        <div>
-                          <Input
-                            type="text"
-                            placeholder="Your address"
-                            onChange={field.onChange}
-                          />
-                          <FormErrorMessage message={errors.address?.message} />
-                        </div>
-                      );
-                    }}
-                  />
-                </div>
-                <div className="flex justify-between items-center">
-                  <h2>Total CA $ 100</h2>
-                  <div className="space-x-4">
-                    <Button
-                      type="submit"
-                      disabled={isSubmitting}
-                      className="bg-green-500 hover:bg-green-500"
-                    >
-                      Book this car
-                    </Button>
-                  </div>
-                </div>
-              </form>
-            </div>
+              </div>
+            </form>
           </div>
         </div>
-      </Suspense>
+      </div>
     </main>
   );
 };

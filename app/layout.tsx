@@ -3,6 +3,7 @@ import { ThemeProvider } from "next-themes";
 import "./globals.css";
 import Footer from "@/components/app-components/footer";
 import Navbar from "@/components/app-components/navabar";
+import { Suspense } from "react";
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -30,7 +31,7 @@ export default function RootLayout({
         >
           <div className="min-h-[100dvh] grid grid-rows-[auto_1fr_auto] ">
             <Navbar />
-            {children}
+            <Suspense>{children}</Suspense>
             <Footer />
           </div>
         </ThemeProvider>
