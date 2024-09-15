@@ -354,4 +354,10 @@ const RentPage = () => {
     </main>
   );
 };
-export default RentPage;
+export default function Page() {
+  return (
+    <Suspense>
+      <RentPage />
+    </Suspense>
+  );
+}
