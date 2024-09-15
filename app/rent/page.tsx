@@ -110,10 +110,10 @@ const RentPage = () => {
   };
   return (
     <main className="lg:container py-4">
-      <h1 className="font-medium text-3xl mb-5 ">
-        <span className="text-md text-gray-800">Rent</span> {car && car.name}
-      </h1>
       <Suspense>
+        <h1 className="font-medium text-3xl mb-5 ">
+          <span className="text-md text-gray-800">Rent</span> {car && car.name}
+        </h1>
         <div className="flex gap-[1.9rem]">
           <div className="flex items-center justify-center w-[40.625rem] min-h-[25rem] flex-shrink-0 bg-gray-100 rounded-sm">
             <Image
