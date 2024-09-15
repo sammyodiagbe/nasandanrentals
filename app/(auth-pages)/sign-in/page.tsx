@@ -1,5 +1,5 @@
 "use client";
-import { signInAction } from "@/app/actions";
+import { signInAction, SignupWithGoogle } from "@/app/actions";
 import { FormMessage, Message } from "@/components/form-message";
 import { SubmitButton } from "@/components/submit-button";
 import { Button } from "@/components/ui/button";
@@ -12,17 +12,7 @@ export default function Login({ searchParams }: { searchParams: Message }) {
   const supabase = createClient();
 
   const attemptLoginWithGoogle = async () => {
-    const { data, error } = await supabase.auth.signInWithOAuth({
-      provider: "google",
-
-      options: {
-        redirectTo: "http://localhost:3000",
-      },
-    });
-
-    if (error) {
-      console.log(error);
-    }
+    await SignupWithGoogle();
   };
   return (
     <>
