@@ -5,7 +5,7 @@ import WhyChooseUsComponent from "@/components/home/whychooseus";
 import Image from "next/image";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { useEffect } from "react";
+import { Suspense, useEffect } from "react";
 import { exchangeCodeForSession } from "./actions";
 
 export default async function Index() {
@@ -19,7 +19,7 @@ export default async function Index() {
     }
   }, []);
   return (
-    <>
+    <Suspense>
       <main className="flex-1 flex flex-col gap-6 px-4 lg:container">
         <div className="flex px-4 py-4 my-5">
           <section className="w-[35rem] space-y-8">
@@ -88,6 +88,6 @@ export default async function Index() {
           </div>
         </section>
       </main>
-    </>
+    </Suspense>
   );
 }
