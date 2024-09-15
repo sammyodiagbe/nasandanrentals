@@ -9,8 +9,6 @@ import { createClient } from "@/utils/supabase/client";
 import Link from "next/link";
 
 export default function Login({ searchParams }: { searchParams: Message }) {
-  const supabase = createClient();
-
   const attemptLoginWithGoogle = async () => {
     await SignupWithGoogle();
   };
@@ -49,12 +47,17 @@ export default function Login({ searchParams }: { searchParams: Message }) {
             <Button
               variant={"outline"}
               className="w-full"
+              type={"button"}
               onClick={attemptLoginWithGoogle}
             >
               Sign in with Google
             </Button>
           </div>
-          <SubmitButton pendingText="Signing In..." formAction={signInAction}>
+          <SubmitButton
+            type="submit"
+            pendingText="Signing In..."
+            formAction={signInAction}
+          >
             Sign in
           </SubmitButton>
           <FormMessage message={searchParams} />
