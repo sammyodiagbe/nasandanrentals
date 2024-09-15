@@ -15,12 +15,7 @@ export default function Login({ searchParams }: { searchParams: Message }) {
     await SignupWithGoogle();
   };
   return (
-    <>
-      <div className="">
-        <Button className="w-full" onClick={attemptLoginWithGoogle}>
-          Sign in with Google
-        </Button>
-      </div>
+    <div className="py-5 flex items-center justify-center">
       <form className="flex-1 flex flex-col min-w-64">
         <h1 className="text-2xl font-medium">Sign in</h1>
         <p className="text-sm text-foreground">
@@ -50,13 +45,21 @@ export default function Login({ searchParams }: { searchParams: Message }) {
             placeholder="Your password"
             required
           />
-
+          <div className="">
+            <Button
+              variant={"outline"}
+              className="w-full"
+              onClick={attemptLoginWithGoogle}
+            >
+              Sign in with Google
+            </Button>
+          </div>
           <SubmitButton pendingText="Signing In..." formAction={signInAction}>
             Sign in
           </SubmitButton>
           <FormMessage message={searchParams} />
         </div>
       </form>
-    </>
+    </div>
   );
 }

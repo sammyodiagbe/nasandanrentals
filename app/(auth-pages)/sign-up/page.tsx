@@ -5,10 +5,7 @@ import { SubmitButton } from "@/components/submit-button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
-import { SmtpMessage } from "../smtp-message";
 import { Button } from "@/components/ui/button";
-import { createClient } from "@/utils/supabase/server";
-import { headers } from "next/headers";
 
 export default function Signup({ searchParams }: { searchParams: Message }) {
   if ("message" in searchParams) {
@@ -20,7 +17,7 @@ export default function Signup({ searchParams }: { searchParams: Message }) {
   }
 
   return (
-    <>
+    <div className="py-5 flex items-center justify-center">
       <form className="flex flex-col min-w-64 max-w-64 mx-auto">
         <h1 className="text-2xl font-medium">Sign up</h1>
         <p className="text-sm text text-foreground">
@@ -64,6 +61,6 @@ export default function Signup({ searchParams }: { searchParams: Message }) {
           <FormMessage message={searchParams} />
         </div>
       </form>
-    </>
+    </div>
   );
 }
