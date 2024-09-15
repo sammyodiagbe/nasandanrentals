@@ -211,7 +211,7 @@ export const testStripe = async (data: { name: string; price: number }) => {
   const session = await stripeClient.checkout.sessions.create({
     line_items: [{ quantity: 1, price: product.default_price as string }],
     mode: "payment",
-    success_url: `http://localhost:3000/payment-successful?session_id={CHECKOUT_SESSION_ID}&car_name=${name}`,
+    success_url: `${origin}/payment-successful?session_id={CHECKOUT_SESSION_ID}&car_name=${name}`,
   });
 
   url = session.url as string | null;
@@ -248,7 +248,6 @@ export const SignupWithGoogle = async () => {
     //   redirectTo: `${origin}`,
     // },
   });
-  console.log(data.url);
   if (data?.url) {
     redirect(data.url);
   }
@@ -256,7 +255,7 @@ export const SignupWithGoogle = async () => {
 
 export const exchangeCodeForSession = async (code: string) => {
   const supabase = createClient();
-  const origin = headers().get("Origin");
+  const origin = headers().get("origin");
   const {
     data: { user },
     error,
