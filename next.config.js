@@ -8,9 +8,7 @@ const nextConfig = {
             pathname: '/storage/**',
           }]
     },
-    experimental: {
-        missingSuspenseWithCSRBailout: false,
-      },
+    
 };
 
 module.exports = nextConfig;
