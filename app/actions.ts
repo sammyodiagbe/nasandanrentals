@@ -244,9 +244,9 @@ export const SignupWithGoogle = async () => {
   const origin = headers().get("origin");
   const { data } = await supabase.auth.signInWithOAuth({
     provider: "google",
-    // options: {
-    //   redirectTo: `${origin}`,
-    // },
+    options: {
+      redirectTo: `${origin}`,
+    },
   });
   if (data?.url) {
     redirect(data.url);
@@ -256,6 +256,8 @@ export const SignupWithGoogle = async () => {
 export const exchangeCodeForSession = async (code: string) => {
   const supabase = createClient();
   const origin = headers().get("origin");
+
+  console.log(origin);
   const {
     data: { user },
     error,
