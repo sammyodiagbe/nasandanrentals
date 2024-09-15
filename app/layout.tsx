@@ -5,12 +5,7 @@ import Footer from "@/components/app-components/footer";
 import Navbar from "@/components/app-components/navabar";
 import { Suspense } from "react";
 
-const defaultUrl = process.env.VERCEL_URL
-  ? `https://${process.env.VERCEL_URL}`
-  : "http://localhost:3000";
-
 export const metadata = {
-  metadataBase: new URL(defaultUrl),
   title: "Next.js and Supabase Starter Kit",
   description: "The fastest way to build apps with Next.js and Supabase",
 };
