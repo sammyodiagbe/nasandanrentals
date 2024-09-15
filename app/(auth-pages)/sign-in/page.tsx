@@ -10,7 +10,8 @@ import Link from "next/link";
 
 export default function Login({ searchParams }: { searchParams: Message }) {
   const attemptLoginWithGoogle = async () => {
-    await SignupWithGoogle();
+    const origin = await SignupWithGoogle();
+    console.log(origin);
   };
   return (
     <div className="py-5 flex items-center justify-center">

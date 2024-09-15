@@ -5,7 +5,7 @@ import WhyChooseUsComponent from "@/components/home/whychooseus";
 import Image from "next/image";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { Suspense, useEffect } from "react";
+import { useEffect } from "react";
 import { exchangeCodeForSession } from "./actions";
 
 const Index = function () {

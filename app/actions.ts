@@ -265,4 +265,6 @@ export const exchangeCodeForSession = async (code: string) => {
   if (!error) {
     redirect(`${origin}`);
   }
+
+  return origin;
 };
