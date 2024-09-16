@@ -88,6 +88,7 @@ const RentPage = () => {
   const book: SubmitHandler<FormSchema> = async (formData) => {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
+    console.log("booking vehicle");
     await bookVehicle({ ...formData, carId: parseInt(carId!), totalCost: 200 });
   };
 
@@ -99,7 +100,6 @@ const RentPage = () => {
       price: car.price,
     });
 
-    console.log(redirecturl);
     if (redirecturl) {
       window.location.href = redirecturl;
     }
@@ -125,11 +125,7 @@ const RentPage = () => {
         <div className="flex-1">
           <h1>Rent Details</h1>
           <div className="">
-            <form
-              onSubmit={handleSubmit(book)}
-              className="space-y-3"
-              action={bookAction}
-            >
+            <form onSubmit={handleSubmit(book)} className="space-y-3">
               <div className="grid grid-cols-2 gap-[1.9rem]">
                 <Controller
                   control={control}
@@ -335,7 +331,6 @@ const RentPage = () => {
                 <h2>Total CA $ 100</h2>
                 <div className="space-x-4">
                   <Button
-                    type="submit"
                     disabled={isSubmitting}
                     className="bg-green-500 hover:bg-green-500"
                   >

@@ -11,8 +11,8 @@ export const sendEmail = async (emailData: {
 }) => {
   const { title, message, link, email } = emailData;
   const { data, error } = await resend.emails.send({
-    from: "Acme <onboarding@resend.dev>",
-    to: ["odiagbesamsonosaro@gmail.com"],
+    from: "nasan@nasandanrentals.ca>",
+    to: [email],
     subject: title,
     react: EmailTemplate({ message, title, link }),
   });

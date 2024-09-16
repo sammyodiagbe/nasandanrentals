@@ -170,7 +170,6 @@ export const bookVehicle = async (formData: TBooking) => {
     })
     .select();
 
-  console.log(res);
   const { error, data } = res;
   if (error) {
     console.log(error);
