@@ -92,19 +92,6 @@ const RentPage = () => {
     await bookVehicle({ ...formData, carId: parseInt(carId!), totalCost: 200 });
   };
 
-  const makePurchase: MouseEventHandler<HTMLButtonElement> = async (event) => {
-    event.preventDefault();
-
-    const redirecturl: string | null = await testStripe({
-      name: car?.name,
-      price: car.price,
-    });
-
-    if (redirecturl) {
-      window.location.href = redirecturl;
-    }
-  };
-
   const bookAction = (formData: FormData) => {
     console.log(formData);
   };

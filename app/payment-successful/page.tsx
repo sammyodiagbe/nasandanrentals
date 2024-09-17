@@ -2,10 +2,52 @@
 
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Suspense } from "react";
+import { MouseEventHandler, Suspense, useEffect, useState } from "react";
 import ParagraphSuspense from "@/components/suspense/paragraph";
+import { testStripe } from "../actions";
+import { useSearchParams } from "next/navigation";
+import { createClient } from "@/utils/supabase/client";
 
 const PaymentSuccessful = () => {
+  const supabase = createClient();
+  const [car, setCar] = useState<any>(null);
+  const search = useSearchParams();
+  const [error, setError] = useState(false);
+
+  const carId = search.get("user_id");
+
+  useEffect(() => {
+    if (carId) {
+      fetchCar();
+    }
+  }, []);
+
+  const fetchCar = async () => {
+    const { data: cars, error } = await supabase
+      .from("cars")
+      .select()
+      .eq("id", carId);
+    if (error) {
+      setError(true);
+      setCar(null);
+      return;
+    }
+
+    setCar(cars[0]);
+  };
+
+  const makePurchase: MouseEventHandler<HTMLButtonElement> = async (event) => {
+    event.preventDefault();
+
+    const redirecturl: string | null = await testStripe({
+      name: car?.name,
+      price: car.price,
+    });
+
+    if (redirecturl) {
+      window.location.href = redirecturl;
+    }
+  };
   return (
     <main className="py-8">
       <Suspense>
