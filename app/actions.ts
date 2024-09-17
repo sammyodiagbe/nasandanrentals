@@ -8,7 +8,6 @@ import { TBooking, TbookingRequired } from "@/utils/types";
 import { sendEmail } from "@/utils/sendEmail";
 import { stripeClient } from "@/utils/stripe";
 import Stripe from "stripe";
-import { SupabaseAuthClient } from "@supabase/supabase-js/dist/module/lib/SupabaseAuthClient";
 import { UserResponse } from "@supabase/supabase-js";
 
 export const signUpAction = async (formData: FormData) => {
@@ -183,7 +182,10 @@ export const bookVehicle = async (formData: TBooking) => {
   redirect(`/booking-confirmed?booking_id=${data[0].id}`);
 };
 
-export const testStripe = async (data: { name: string; price: number }) => {
+export const makeStripePayment = async (data: {
+  name: string;
+  price: number;
+}) => {
   const { name, price } = data;
   const { data: products } = await stripeClient.products.list();
 

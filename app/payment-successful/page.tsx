@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { MouseEventHandler, Suspense, useEffect, useState } from "react";
 import ParagraphSuspense from "@/components/suspense/paragraph";
-import { testStripe } from "../actions";
+import { makeStripePayment } from "../actions";
 import { useSearchParams } from "next/navigation";
 import { createClient } from "@/utils/supabase/client";
 
@@ -39,7 +39,7 @@ const PaymentSuccessful = () => {
   const makePurchase: MouseEventHandler<HTMLButtonElement> = async (event) => {
     event.preventDefault();
 
-    const redirecturl: string | null = await testStripe({
+    const redirecturl: string | null = await makeStripePayment({
       name: car?.name,
       price: car.price,
     });
