@@ -18,18 +18,11 @@ export default function RootLayout({
   return (
     <html lang="en" className={GeistSans.className} suppressHydrationWarning>
       <body className="bg-background text-foreground ">
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <div className="min-h-[100dvh] grid grid-rows-[auto_1fr_auto] ">
-            <Navbar />
-            <Suspense>{children}</Suspense>
-            <Footer />
-          </div>
-        </ThemeProvider>
+        <div className="min-h-[100dvh] grid grid-rows-[auto_1fr_auto] ">
+          <Navbar />
+          <Suspense>{children}</Suspense>
+          <Footer />
+        </div>
       </body>
     </html>
   );

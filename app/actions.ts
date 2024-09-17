@@ -188,7 +188,7 @@ export const makeStripePayment = async (data: {
 }) => {
   const { name, price } = data;
   const { data: products } = await stripeClient.products.list();
-
+  const origin = await headers().get("origin");
   console.log(products);
   let url: string | null = null;
   let product: Stripe.Product;
