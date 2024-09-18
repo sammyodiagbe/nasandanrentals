@@ -30,14 +30,10 @@ const Index = function () {
             it's a weekend getaway or a business meeting.
           </p>
           <div className="flex gap-2">
-            <CustomButton
-              title="Book a car now"
-              style="bg-green-500 hover:bg-green-600"
-            />
-            <Link href={"/sign-up"}>
+            <Link href={"/collections"}>
               <CustomButton
                 title="Signin"
-                style="bg-gray-200 hover:bg-gray-300 text-gray-800 px-10"
+                style="bg-green-500 hover:bg-green-600 text-white px-10"
               />
             </Link>
           </div>
