@@ -70,7 +70,7 @@ const Navbar = () => {
             <li>
               <Link href={"/bookings"}>Bookings</Link>
             </li>
-            {user?.user_metadata.full_name}
+
             <li>
               {user ? (
                 <Button className="" variant={"outline"} onClick={signOut}>
@@ -82,6 +82,13 @@ const Navbar = () => {
                 </Link>
               )}
             </li>
+            {user ? (
+              <li>
+                <span className="h-8 w-8 rounded-full flex items-center justify-center font-bold bg-gray-300 text-sm">
+                  {user?.user_metadata.full_name[0]}
+                </span>
+              </li>
+            ) : null}
           </ul>
         </div>
       </div>
