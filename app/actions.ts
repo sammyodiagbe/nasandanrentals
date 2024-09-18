@@ -9,13 +9,13 @@ import { sendEmail } from "@/utils/sendEmail";
 import { stripeClient } from "@/utils/stripe";
 import Stripe from "stripe";
 import { UserResponse } from "@supabase/supabase-js";
+import { origin } from "@/utils/url";
 
 export const signUpAction = async (formData: FormData) => {
   const email = formData.get("email")?.toString();
   const password = formData.get("password")?.toString();
   const name = formData.get("name")?.toString();
   const supabase = createClient();
-  const origin = headers().get("origin");
 
   if (!email || !password) {
     return { error: "Email and password are required" };
@@ -64,7 +64,6 @@ export const signInAction = async (formData: FormData) => {
 export const forgotPasswordAction = async (formData: FormData) => {
   const email = formData.get("email")?.toString();
   const supabase = createClient();
-  const origin = headers().get("origin");
   const callbackUrl = formData.get("callbackUrl")?.toString();
 
   if (!email) {
@@ -188,8 +187,6 @@ export const makeStripePayment = async (data: {
 }) => {
   const { name, price } = data;
   const { data: products } = await stripeClient.products.list();
-  const origin = await headers().get("origin");
-  console.log(products);
   let url: string | null = null;
   let product: Stripe.Product;
 
@@ -241,7 +238,6 @@ export const getUserBookings = async () => {
 
 export const SignupWithGoogle = async () => {
   const supabase = createClient();
-  const origin = headers().get("origin");
   const { data } = await supabase.auth.signInWithOAuth({
     provider: "google",
   });
@@ -252,9 +248,6 @@ export const SignupWithGoogle = async () => {
 
 export const exchangeCodeForSession = async (code: string) => {
   const supabase = createClient();
-  const origin = headers().get("origin");
-
-  console.log(origin);
   const {
     data: { user },
     error,
