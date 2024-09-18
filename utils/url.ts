@@ -1,4 +1,4 @@
 export const origin =
-  process.env.ENVIROMENT === "dev"
+  process.env.ENVIROMENT === "development"
     ? "http://localhost:3000"
     : "https://nasandanrentals.ca";
