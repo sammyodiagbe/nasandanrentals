@@ -32,7 +32,7 @@ const Index = function () {
           <div className="flex gap-2">
             <Link href={"/collections"}>
               <CustomButton
-                title="Signin"
+                title="Book a car now"
                 style="bg-green-500 hover:bg-green-600 text-white px-10"
               />
             </Link>
@@ -76,10 +76,14 @@ const Index = function () {
             Find the perfect car for your next trip and start your journey
             today.
           </p>
-          <CustomButton
-            title="Book a car now"
-            style="bg-green-500 hover:bg-green-600"
-          />
+          <div>
+            <Link href={"/collections"} className="">
+              <CustomButton
+                title="Book a car now"
+                style="bg-green-500 hover:bg-green-600 text-white px-10"
+              />
+            </Link>
+          </div>
         </div>
       </section>
     </main>
