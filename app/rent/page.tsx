@@ -1,14 +1,8 @@
 "use client";
 import { createClient } from "@/utils/supabase/client";
 import Image from "next/image";
-import { redirect, useSearchParams } from "next/navigation";
-import {
-  MouseEventHandler,
-  Suspense,
-  useCallback,
-  useEffect,
-  useState,
-} from "react";
+import { useSearchParams } from "next/navigation";
+import { Suspense, useEffect, useState } from "react";
 import { z } from "zod";
 import {
   SubmitHandler,
