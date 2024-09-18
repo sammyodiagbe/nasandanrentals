@@ -36,7 +36,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { generateTime } from "@/utils/timeOptions";
-import { bookVehicle, testStripe } from "../actions";
+import { bookVehicle } from "../actions";
 import FormErrorMessage from "@/components/formErrorMessage";
 
 const formSchema = z.object({
@@ -88,7 +88,6 @@ const RentPage = () => {
   const book: SubmitHandler<FormSchema> = async (formData) => {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    console.log("booking vehicle");
     await bookVehicle({ ...formData, carId: parseInt(carId!), totalCost: 200 });
   };
 
