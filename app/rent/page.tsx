@@ -4,12 +4,7 @@ import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
 import { z } from "zod";
-import {
-  SubmitHandler,
-  useForm,
-  Controller as FormController,
-  Controller,
-} from "react-hook-form";
+import { SubmitHandler, useForm, Controller, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -33,6 +28,8 @@ import { generateTime } from "@/utils/timeOptions";
 import { bookVehicle } from "../actions";
 import FormErrorMessage from "@/components/formErrorMessage";
 import LabelComponent from "@/components/app-components/label";
+import { getNumberOfDays, isPastDate } from "@/utils/dateFormat";
+import { useToast } from "@/hooks/use-toast";
 
 const formSchema = z.object({
   pickupDate: z.date(),
@@ -42,7 +39,7 @@ const formSchema = z.object({
   fullname: z.string(),
   emailAddress: z.string(),
   address: z.string(),
-  phonenumber: z.string().regex(new RegExp("^d{10}$")),
+  phonenumber: z.string().regex(new RegExp(/^\d{10}$/)),
 });
 
 type FormSchema = z.infer<typeof formSchema>;
@@ -54,6 +51,7 @@ const RentPage = () => {
   const supabase = createClient();
   const carId = searchParams.get("car_id");
   const [car, setCar] = useState<any | null>(null);
+  const { toast } = useToast();
   const {
     handleSubmit,
     control,
@@ -61,6 +59,21 @@ const RentPage = () => {
     formState: { errors, isSubmitting },
   } = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
+    defaultValues: {
+      pickupTime: "7:00",
+      returnTime: "7:00",
+    },
+  });
+
+  const [pickupDate, returnDate, returnTime, pickupTime] = useWatch({
+    control,
+    name: ["pickupDate", "returnDate", "returnTime", "pickupTime"],
+    defaultValue: {
+      pickupDate: new Date(Date.now()),
+      returnDate: new Date(Date.now()),
+      pickupTime: "7:00",
+      returnTime: "7:00",
+    },
   });
 
   useEffect(() => {
@@ -84,9 +97,38 @@ const RentPage = () => {
   const book: SubmitHandler<FormSchema> = async (formData) => {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
+    const { pickupDate, pickupTime, returnDate, returnTime } = formData;
+    const numberOfDays: number = getNumberOfDays(
+      pickupDate,
+      pickupTime,
+      returnDate,
+      returnTime
+    );
+
+    const pastDate =
+      isPastDate(pickupDate, pickupTime) || isPastDate(returnDate, returnTime);
+
+    if (pastDate) {
+      toast({
+        title: "Date is in past",
+        description: "One of the date is in the past please",
+      });
+      return;
+    }
+
+    if (numberOfDays < 1) {
+      toast({
+        title: "Invalid date selected",
+        description:
+          "You have selected an invalid date range, please make another selection please",
+      });
+
+      return;
+    }
     await bookVehicle({ ...formData, carId: parseInt(carId!), totalCost: 200 });
   };
 
+  let days = getNumberOfDays(pickupDate, pickupTime, returnDate, returnTime);
   const bookAction = (formData: FormData) => {
     console.log(formData);
   };
@@ -350,7 +392,7 @@ const RentPage = () => {
                             className="max-w-[40px] flex-grow-0 font-bold disabled:bg-gray-300"
                           />
                           <Input
-                            type="text"
+                            type="string"
                             placeholder="Phone number"
                             className="flex-1"
                             id="phonenumber"
@@ -367,7 +409,14 @@ const RentPage = () => {
                 />
               </div>
               <div className="flex justify-between items-center">
-                <h2>Total CA $ 100</h2>
+                {days <= 0 || isNaN(days) ? (
+                  <span className="">Invalid date</span>
+                ) : (
+                  <span className="text-sm font-bold">
+                    {days} x ${parseInt(car?.price)} = $
+                    {days * parseInt(car?.price)}
+                  </span>
+                )}
                 <div className="space-x-4">
                   <Button
                     disabled={isSubmitting}

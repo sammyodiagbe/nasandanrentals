@@ -1,9 +1,9 @@
 import { GeistSans } from "geist/font/sans";
-import { ThemeProvider } from "next-themes";
 import "./globals.css";
 import Footer from "@/components/app-components/footer";
 import Navbar from "@/components/app-components/navabar";
 import { Suspense } from "react";
+import { Toaster } from "@/components/ui/toaster";
 
 export const metadata = {
   title: "Next.js and Supabase Starter Kit",
@@ -21,6 +21,7 @@ export default function RootLayout({
         <div className="min-h-[100dvh] grid grid-rows-[auto_1fr_auto] ">
           <Navbar />
           <Suspense>{children}</Suspense>
+          <Toaster />
           <Footer />
         </div>
       </body>

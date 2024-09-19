@@ -1,4 +1,4 @@
-import { differenceInDays } from "date-fns";
+import { differenceInDays, isBefore } from "date-fns";
 
 export function combineDateAndTime(timestamp: string, timeOfDay: string) {
   // Extract date part (YYYY-MM-DD) from the timestamp
@@ -21,21 +21,36 @@ export function combineDateAndTime(timestamp: string, timeOfDay: string) {
 }
 
 export function getNumberOfDays(
-  pickupDate: string,
+  pickupDate: Date,
   pickupTime: string,
-  returnDate: string,
+  returnDate: Date,
   returnTime: string
-) {
-  const pickupD = pickupDate.split("T")[0];
-  const returnD = returnDate.split("T")[0];
+): number {
+  if (!pickupDate || !returnDate) return 0;
+  const pickupD = pickupDate.toISOString().split("T")[0];
+  const returnD = returnDate.toISOString().split("T")[0];
 
   // Combine the date with the provided time of day
   const pickupDateTime = `${pickupD}T${pickupTime}`;
   const returnDateTime = `${returnD}T${returnTime}`;
 
+  console.log(pickupDateTime);
+
   // Create the new Date object
   const pickupdateObject = new Date(pickupDateTime);
   const returnDateObject = new Date(returnDateTime);
 
-  return differenceInDays(pickupdateObject, returnDateObject);
+  console.log(pickupdateObject);
+  console.log(returnDateObject);
+
+  const diff = differenceInDays(returnDateObject, pickupdateObject);
+  console.log(diff);
+  return diff;
 }
+
+export const isPastDate = (date: Date, time: string) => {
+  const d = date.toISOString().split("T")[0];
+  const now = Date.now();
+  const givenDate = new Date(`${d}T${time}`);
+  return isBefore(givenDate, now);
+};
