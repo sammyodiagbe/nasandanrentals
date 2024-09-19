@@ -32,6 +32,7 @@ import {
 import { generateTime } from "@/utils/timeOptions";
 import { bookVehicle } from "../actions";
 import FormErrorMessage from "@/components/formErrorMessage";
+import LabelComponent from "@/components/app-components/label";
 
 const formSchema = z.object({
   pickupDate: z.date(),
@@ -41,6 +42,7 @@ const formSchema = z.object({
   fullname: z.string(),
   emailAddress: z.string(),
   address: z.string(),
+  phonenumber: z.string().regex(new RegExp("^d{10}$")),
 });
 
 type FormSchema = z.infer<typeof formSchema>;
@@ -113,8 +115,12 @@ const RentPage = () => {
                   render={({ field }) => {
                     return (
                       <div>
+                        <LabelComponent
+                          htmlFor="pickupDate"
+                          value="Pickup date"
+                        />
                         <Popover>
-                          <PopoverTrigger asChild>
+                          <PopoverTrigger asChild id="pickupDate">
                             <Button
                               variant={"outline"}
                               className={cn(
@@ -152,8 +158,12 @@ const RentPage = () => {
                   render={({ field }) => {
                     return (
                       <div className="w-full">
+                        <LabelComponent
+                          htmlFor="pickupTime"
+                          value="Pickup time"
+                        />
                         <Select onValueChange={field.onChange}>
-                          <SelectTrigger className="">
+                          <SelectTrigger className="" id="pickupTime">
                             <SelectValue placeholder="Choose Pickup Time" />
                           </SelectTrigger>
                           <SelectContent>
@@ -179,15 +189,19 @@ const RentPage = () => {
                   }}
                 />
               </div>
-              <div className="grid grid-cols-2 gap-[1.9rem">
+              <div className="grid grid-cols-2 gap-[1.9rem]">
                 <Controller
                   control={control}
                   name="returnDate"
                   render={({ field }) => {
                     return (
                       <div>
+                        <LabelComponent
+                          htmlFor="returnDate"
+                          value="Return date"
+                        />
                         <Popover>
-                          <PopoverTrigger asChild>
+                          <PopoverTrigger asChild id="returnDate">
                             <Button
                               variant={"outline"}
                               className={cn(
@@ -224,8 +238,12 @@ const RentPage = () => {
                   render={({ field }) => {
                     return (
                       <div>
+                        <LabelComponent
+                          htmlFor="returnTime"
+                          value="Return time"
+                        />
                         <Select onValueChange={field.onChange}>
-                          <SelectTrigger className="">
+                          <SelectTrigger className="" id="returnTime">
                             <SelectValue placeholder="Choose return Time" />
                           </SelectTrigger>
                           <SelectContent className="w-full">
@@ -260,8 +278,10 @@ const RentPage = () => {
                   render={({ field }) => {
                     return (
                       <div>
+                        <LabelComponent htmlFor="email" value="email" />
                         <Input
                           type="email"
+                          id="email"
                           placeholder="Your email"
                           onChange={field.onChange}
                         />
@@ -278,8 +298,10 @@ const RentPage = () => {
                   render={({ field }) => {
                     return (
                       <div>
+                        <LabelComponent htmlFor="fullname" value="Fullname" />
                         <Input
                           type="text"
+                          id="fullname"
                           placeholder="Your fullname"
                           onChange={field.onChange}
                         />
@@ -289,19 +311,56 @@ const RentPage = () => {
                   }}
                 />
               </div>
-              <div className="">
+              <div className="grid grid-cols-2 gap-[1.9rem]">
                 <Controller
                   control={control}
                   name="address"
                   render={({ field }) => {
                     return (
                       <div>
+                        <LabelComponent htmlFor="address" value="Address" />
                         <Input
                           type="text"
+                          id="address"
                           placeholder="Your address"
                           onChange={field.onChange}
                         />
                         <FormErrorMessage message={errors.address?.message} />
+                      </div>
+                    );
+                  }}
+                />
+                <Controller
+                  control={control}
+                  name="phonenumber"
+                  render={({ field }) => {
+                    return (
+                      <div>
+                        <LabelComponent
+                          htmlFor="phonenumber"
+                          value="Phone Number"
+                        />
+                        <div className="flex gap-2 w-full">
+                          <Input
+                            type="text"
+                            readOnly
+                            value={"+1"}
+                            disabled
+                            placeholder="+1"
+                            className="max-w-[40px] flex-grow-0 font-bold disabled:bg-gray-300"
+                          />
+                          <Input
+                            type="text"
+                            placeholder="Phone number"
+                            className="flex-1"
+                            id="phonenumber"
+                            onChange={field.onChange}
+                          />
+                        </div>
+
+                        <FormErrorMessage
+                          message={errors.phonenumber?.message}
+                        />
                       </div>
                     );
                   }}
