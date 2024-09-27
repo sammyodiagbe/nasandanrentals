@@ -59,7 +59,7 @@ const Navbar = () => {
     router.push("/sign-in");
   };
   return (
-    <nav className="max-w-screen p-4  sticky top-0 bg-white z-10">
+    <nav className=" p-4  sticky top-0 bg-white z-10">
       <div className="lg:container flex justify-between items-center">
         <h1 className="font-bold text-xl">
           <Link href={"/"}>Nasandan</Link>

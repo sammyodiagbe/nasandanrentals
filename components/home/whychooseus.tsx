@@ -37,7 +37,7 @@ const features = [
 const WhyChooseUsComponent = () => {
   return (
     <section className="bg-gray-50 py-12">
-      <div className="container mx-auto px-4">
+      <div className="md:container mx-auto px-4">
         <h2 className="text-3xl font-bold text-center mb-8">Why choose us?</h2>
         <p className="text-center mb-12 max-w-2xl mx-auto">
           At Nasandan, we make car rentals simple, affordable, and hassle-free.

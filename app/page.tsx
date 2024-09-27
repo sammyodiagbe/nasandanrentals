@@ -19,10 +19,10 @@ const Index = function () {
     }
   }, []);
   return (
-    <main className=" px-4 md:container">
+    <main className="max-w-screen  md:container">
       <div className="flex flex-col md:flex-row px-4 py-4 my-5">
-        <section className="w-full md:w-[35rem] space-y-8">
-          <h1 className="text-7xl font-bold text-gray-700 leading-[4.5rem]">
+        <section className="mb-10 md:md-0 text-center md:text-left max-w-full md:w-[35rem] space-y-8 ">
+          <h1 className="text-5xl leading-[2.5rem] md:text-7xl font-bold text-gray-700 md:leading-[4.5rem]">
             Rent the perfect car for every journey
           </h1>
           <p>
@@ -38,20 +38,18 @@ const Index = function () {
             </Link>
           </div>
         </section>
-        <section className="flex-1">
+        <section className="flex-1 py-4 md:py-0 text-center overflow-hidden">
           <Image
             src={"/images/hero_image.svg"}
             height={500}
             width={500}
             alt="Car sideways"
-            layout="responsive"
+            className=" max-w-full"
           />
         </section>
       </div>
-      {/* why choose us */}
-
       <WhyChooseUsComponent />
-
+      {/* section */}
       <section className="bg-white py-12">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-center mb-8">
@@ -83,17 +81,19 @@ const Index = function () {
           </div>
         </div>
       </section>
-      <section className="flex flex-col md:flex-row p-4 items-center gap-[30px] my-5">
+
+      {/* call to action */}
+      <section className="flex flex-col md:flex-row p-4 items-center gap-8 my-5">
         <div className="flex-1">
           <Image
             src={"/images/hero_image2.svg"}
             height={500}
             width={500}
             alt="Car sideways"
-            layout="responsive"
+            className="max-w-full"
           />
         </div>
-        <div className=" w-[30rem] space-y-5">
+        <div className=" space-y-5 text-center md:text-left">
           <h1 className="text-6xl font-bold">Ready to hit the road?</h1>
           <p>
             Find the perfect car for your next trip and start your journey
@@ -114,3 +114,37 @@ const Index = function () {
 };
 
 export default Index;
+{
+  /* 
+      {/* why choose us 
+
+      
+
+      
+      <section className="flex flex-col md:flex-row p-4 items-center gap-8 my-5">
+        <div className="flex-1">
+          <Image
+            src={"/images/hero_image2.svg"}
+            height={500}
+            width={500}
+            alt="Car sideways"
+            className="max-w-full"
+          />
+        </div>
+        <div className=" w-[30rem] space-y-5">
+          <h1 className="text-6xl font-bold">Ready to hit the road?</h1>
+          <p>
+            Find the perfect car for your next trip and start your journey
+            today.
+          </p>
+          <div>
+            <Link href={"/collections"} className="">
+              <CustomButton
+                title="Book a car now"
+                style="bg-green-500 hover:bg-green-600 text-white px-10"
+              />
+            </Link>
+          </div>
+        </div>
+      </section> */
+}

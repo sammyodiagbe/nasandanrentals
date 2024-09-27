@@ -77,7 +77,7 @@ const BookingsPage = () => {
       </div>
 
       {bookings && bookings.length ? (
-        <Table className="relative">
+        <Table className="relative w-full">
           <TableCaption>A list of your recent bookings.</TableCaption>
           <TableHeader>
             <TableRow>
