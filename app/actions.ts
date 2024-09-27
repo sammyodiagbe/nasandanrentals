@@ -142,6 +142,7 @@ export const bookVehicle = async (formData: TBooking) => {
     emailAddress,
     fullname,
     address,
+    phonenumber,
   } = formData;
   const user = await supabase.auth.getUser();
   const origin = headers().get("origin");
@@ -165,6 +166,7 @@ export const bookVehicle = async (formData: TBooking) => {
       email: emailAddress,
       status: 1,
       user_id: user.data.user?.id,
+      phone_number: phonenumber,
     })
     .select();
 

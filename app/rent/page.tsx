@@ -73,6 +73,7 @@ const RentPage = () => {
       returnDate: new Date(Date.now()),
       pickupTime: "7:00",
       returnTime: "7:00",
+      phonenumber: "",
     },
   });
 
