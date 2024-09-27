@@ -6,11 +6,17 @@ import { createClient } from "@/utils/supabase/client";
 import { useEffect, useState } from "react";
 import { User } from "@supabase/supabase-js";
 import { redirect, useRouter } from "next/navigation";
+import MobileMenu from "./menuComponent";
 
 const Navbar = () => {
   const supabase = createClient();
   const [user, setUser] = useState<User | null>(null);
   const router = useRouter();
+  const [isOpen, setOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setOpen(!isOpen);
+  };
 
   useEffect(() => {
     const getSession = async () => {
@@ -53,13 +59,33 @@ const Navbar = () => {
     router.push("/sign-in");
   };
   return (
-    <nav className=" p-4  sticky top-0 bg-white z-10">
+    <nav className="max-w-screen p-4  sticky top-0 bg-white z-10">
       <div className="lg:container flex justify-between items-center">
         <h1 className="font-bold text-xl">
           <Link href={"/"}>Nasandan</Link>
         </h1>
 
-        <div className="navigation">
+        <button
+          className="md:hidden focus:outline-none"
+          onClick={toggleMenu}
+          aria-label="Toggle menu"
+        >
+          <svg
+            className="w-6 h-6"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M4 6h16M4 12h16M4 18h16"
+            />
+          </svg>
+        </button>
+        <div className="hidden md:block">
           <ul className="flex items-center gap-4 text-sm">
             <li>
               <Link href={"/"}>Home</Link>
@@ -92,6 +118,14 @@ const Navbar = () => {
           </ul>
         </div>
       </div>
+      {isOpen && (
+        <div
+          className="fixed inset-0 bg-black opacity-50 z-40 md:hidden"
+          onClick={toggleMenu}
+        ></div>
+      )}
+
+      <MobileMenu isOpen={isOpen} onClose={toggleMenu} />
     </nav>
   );
 };

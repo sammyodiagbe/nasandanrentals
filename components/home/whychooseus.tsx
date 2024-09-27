@@ -7,7 +7,7 @@ type TWhyChooseItem = {
   src: string;
 };
 
-const items = [
+const features = [
   {
     title: "Multiple Options",
     description:
@@ -36,19 +36,26 @@ const items = [
 
 const WhyChooseUsComponent = () => {
   return (
-    <div className="grid grid-cols-4 gap-[30px] ">
-      {items.map((item, index) => {
-        const { title, description, src } = item;
-        return (
-          <WhyChooseItemComponent
-            title={title}
-            description={description}
-            key={index}
-            src={src}
-          />
-        );
-      })}
-    </div>
+    <section className="bg-gray-50 py-12">
+      <div className="container mx-auto px-4">
+        <h2 className="text-3xl font-bold text-center mb-8">Why choose us?</h2>
+        <p className="text-center mb-12 max-w-2xl mx-auto">
+          At Nasandan, we make car rentals simple, affordable, and hassle-free.
+          With a wide range of vehicles to choose from, flexible rental periods,
+          and unbeatable customer service, we ensure you get the best driving
+          experience possible.
+        </p>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {features.map((feature, index) => (
+            <div key={index} className="bg-white p-6 rounded-lg shadow-md">
+              <Image src={feature.src} height={30} width={40} alt="" />
+              <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
+              <p>{feature.description}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
   );
 };
 

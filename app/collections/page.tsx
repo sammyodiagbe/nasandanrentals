@@ -43,10 +43,10 @@ const Collections = () => {
       {fetchingCars ? (
         <CollectionSkeleton />
       ) : (
-        <section className="grid grid-cols-3 gap-[30px]">
+        <section className="p-4 grid md:grid-cols-3 gap-[30px]">
           {allCars?.map((car, index) => {
             return (
-              <div className="flex  flex-col justify-between" key={index}>
+              <div className=" flex   flex-col justify-between" key={index}>
                 <Image
                   src={car.image_url}
                   alt={car.name}

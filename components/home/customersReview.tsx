@@ -41,18 +41,13 @@ const Testimonials = () => {
           style="bg-green-500 hover:bg-green-600"
         />
       </div>
-      <div
-        className={cn(
-          "h-full flex flex-1 gap-8 overflow-x-auto flex-nowrap",
-          "no-scrollbar"
-        )}
-      >
-        {reviews.map((review, index) => {
+      <div className={cn("h-full")}>
+        {/* {reviews.map((review, index) => {
           const { customer, review: text } = review;
           return (
             <UserTestimonial customer={customer} review={text} key={index} />
           );
-        })}
+        })} */}
       </div>
     </div>
   );
