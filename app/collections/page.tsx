@@ -36,9 +36,9 @@ const Collections = () => {
   }
   return (
     <main className=" lg:container ">
-      <h1 className="my-5 text-2xl font-bold text-gray-700">
-        Our collections.
-      </h1>
+      <div className="p-4">
+        <h1 className="my-5 text-xl  text-gray-700">Our collections.</h1>
+      </div>
 
       {fetchingCars ? (
         <CollectionSkeleton />
@@ -91,12 +91,6 @@ const Collections = () => {
                       />
                     </div>
                     <div className="flex justify-end gap-2">
-                      <Link href={`/rent?car_id=${car.id}`}>
-                        <CustomButton
-                          title="Reserve"
-                          style="bg-gray-200 hover:bg-gray-300 text-black"
-                        />
-                      </Link>
                       <Link href={`/rent?car_id=${car.id}`}>
                         <CustomButton
                           title="Book now"

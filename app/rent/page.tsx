@@ -134,11 +134,13 @@ const RentPage = () => {
   };
   return (
     <main className="lg:container py-4">
-      <h1 className="font-medium text-3xl mb-5 ">
-        <span className="text-md text-gray-800">Rent</span> {car && car.name}
-      </h1>
-      <div className="flex gap-[1.9rem]">
-        <div className="flex items-center justify-center w-[40.625rem] min-h-[25rem] flex-shrink-0 bg-gray-100 rounded-sm">
+      <div className="p-4">
+        <h1 className="font-medium text-3xl mb-5 ">
+          <span className="text-md text-gray-800">Rent</span> {car && car.name}
+        </h1>
+      </div>
+      <div className="flex flex-col md:flex-row gap-[1.9rem]">
+        <div className="flex items-center justify-center md:w-[40.625rem] min-h-[25rem] flex-shrink-0 bg-gray-100 rounded-sm">
           <Image
             src={car?.image_url}
             alt="Rent this car today"
@@ -146,11 +148,11 @@ const RentPage = () => {
             width={500}
           />
         </div>
-        <div className="flex-1">
-          <h1>Rent Details</h1>
+        <div className="flex-1 p-4 md:p-0">
+          <h1 className="mb-5">Rent Details</h1>
           <div className="">
             <form onSubmit={handleSubmit(book)} className="space-y-3">
-              <div className="grid grid-cols-2 gap-[1.9rem]">
+              <div className="grid md:grid-cols-2 gap-[1.9rem]">
                 <Controller
                   control={control}
                   name="pickupDate"
@@ -231,7 +233,7 @@ const RentPage = () => {
                   }}
                 />
               </div>
-              <div className="grid grid-cols-2 gap-[1.9rem]">
+              <div className="grid md:grid-cols-2 gap-[1.9rem]">
                 <Controller
                   control={control}
                   name="returnDate"
@@ -313,7 +315,7 @@ const RentPage = () => {
                   }}
                 />
               </div>
-              <div className="grid grid-cols-2 gap-[1.9rem]">
+              <div className="grid md:grid-cols-2 gap-[1.9rem]">
                 <Controller
                   control={control}
                   name="emailAddress"
@@ -353,7 +355,7 @@ const RentPage = () => {
                   }}
                 />
               </div>
-              <div className="grid grid-cols-2 gap-[1.9rem]">
+              <div className="grid md:grid-cols-2 gap-[1.9rem]">
                 <Controller
                   control={control}
                   name="address"

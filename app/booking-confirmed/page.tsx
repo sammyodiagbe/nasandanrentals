@@ -4,6 +4,7 @@ import { MouseEventHandler, useEffect, useState } from "react";
 import { makeStripePayment } from "../actions";
 import { createClient } from "@/utils/supabase/client";
 import { useSearchParams } from "next/navigation";
+import { CheckIcon } from "lucide-react";
 
 const BookingConfirmed = () => {
   const supabase = createClient();
@@ -49,17 +50,23 @@ const BookingConfirmed = () => {
     }
   };
   return (
-    <main className=" lg:container space-y-5 ">
-      <div className="w-[550px] space-y-4 py-4 mx-auto">
+    <main className=" lg:container space-y-4 pt-5 ">
+      <div className="flex justify-center">
+        <div className="  h-24 w-24 rounded-full bg-green-500 flex items-center justify-center">
+          <span className="text-white">
+            <CheckIcon size={40} />
+          </span>
+        </div>
+      </div>
+      <div className="md:w-[550px] space-y-4 p-4 mx-auto text-center md:text-left">
         <h1 className="text-5xl font-bold">Thank you</h1>
         <p>
-          Your booking has been reserved, please confirm booking or click on pay
-          now to complete your booking.Bookings that are past due pickup time
-          are automatically voided. Please note that information on driver's
-          license must match information provided
+          Your booking has been reserved, you can choose to pay now or pay on
+          arrival. Please note that information on driver's license must match
+          information provided
         </p>
         <div className="">
-          <div className="flex justify-end gap-2">
+          <div className="py-2 text-center">
             <Button
               onClick={makePurchase}
               className="bg-green-500 hover:bg-green-600"
