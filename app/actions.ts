@@ -6,7 +6,7 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { TBooking, TbookingRequired } from "@/utils/types";
 import { sendEmail } from "@/utils/sendEmail";
-import { stripeClient } from "@/utils/stripe";
+import { calculateStripeFees, stripeClient } from "@/utils/stripe";
 import Stripe from "stripe";
 import { UserResponse } from "@supabase/supabase-js";
 import { origin } from "@/utils/url";
@@ -207,7 +207,7 @@ export const makeStripePayment = async (data: {
       name: name,
       default_price_data: {
         currency: "cad",
-        unit_amount: Math.round((price + (price * 0.029 + 0.3)) * 100),
+        unit_amount: Math.round(calculateStripeFees(price)),
       },
     });
   }
