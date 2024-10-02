@@ -59,8 +59,8 @@ const BookingConfirmed = () => {
         </div>
       </div>
       <div className="md:w-[550px] space-y-4 p-4 mx-auto text-center md:text-left">
-        <h1 className="text-5xl font-bold">Thank you</h1>
-        <p>
+        <h1 className="text-5xl font-bold text-center">Thank you</h1>
+        <p className="text-center">
           Your booking has been reserved, you can choose to pay now or pay on
           arrival. Please note that information on driver's license must match
           information provided
