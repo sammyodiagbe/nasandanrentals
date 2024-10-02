@@ -42,7 +42,7 @@ const BookingConfirmed = () => {
     console.log("Attempting to make stripe payment");
     const redirecturl: string | null = await makeStripePayment({
       name: booking.cars?.name,
-      price: booking.cars.price,
+      price: booking.total_cost,
     });
 
     if (redirecturl) {
@@ -71,7 +71,7 @@ const BookingConfirmed = () => {
               onClick={makePurchase}
               className="bg-green-500 hover:bg-green-600"
             >
-              Pay now
+              Pay {booking.total_cost} now
             </Button>
           </div>
         </div>
