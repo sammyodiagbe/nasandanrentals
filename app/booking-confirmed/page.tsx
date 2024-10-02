@@ -72,7 +72,7 @@ const BookingConfirmed = () => {
               onClick={makePurchase}
               className="bg-green-500 hover:bg-green-600"
             >
-              Pay {booking?.total_cost} now
+              Pay {booking?.total_cost}$ now
             </Button>
           </div>
         </div>
