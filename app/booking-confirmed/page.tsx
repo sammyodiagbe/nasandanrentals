@@ -43,6 +43,7 @@ const BookingConfirmed = () => {
     const redirecturl: string | null = await makeStripePayment({
       name: booking.cars?.name,
       price: booking?.total_cost,
+      amount: booking?.total_cost / booking.car?.price,
     });
 
     if (redirecturl) {

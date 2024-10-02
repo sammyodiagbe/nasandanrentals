@@ -196,8 +196,9 @@ export const bookVehicle = async (formData: TBooking) => {
 export const makeStripePayment = async (data: {
   name: string;
   price: number;
+  amount: number;
 }) => {
-  const { name, price } = data;
+  const { name, price, amount } = data;
   const { data: products } = await stripeClient.products.list();
   let url: string | null = null;
   let product: Stripe.Product;
@@ -219,7 +220,7 @@ export const makeStripePayment = async (data: {
 
   // then we try to sell the product
   const session = await stripeClient.checkout.sessions.create({
-    line_items: [{ quantity: 1, price: product.default_price as string }],
+    line_items: [{ quantity: amount, price: product.default_price as string }],
     mode: "payment",
     success_url: `${origin}/payment-successful?session_id={CHECKOUT_SESSION_ID}&car_name=${name}`,
   });
