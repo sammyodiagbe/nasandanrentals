@@ -187,7 +187,7 @@ export const bookVehicle = async (formData: TBooking) => {
 
   await sendEmail({
     title: "New car booking",
-    message: `New  booking request for ${cars![0].name} `,
+    message: `New  booking request for ${cars![0].name}, name: ${fullname}, email: ${emailAddress}, phonenumber: ${phonenumber} `,
     email: "nasandanrentals@gmail.com",
   });
   redirect(`/booking-confirmed?booking_id=${data[0].id}`);

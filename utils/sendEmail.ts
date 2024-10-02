@@ -17,8 +17,6 @@ export const sendEmail = async (emailData: {
     react: EmailTemplate({ message, title, link }),
   });
 
-  console.log(error);
-  console.log(data);
   if (error) {
     return false;
   }
