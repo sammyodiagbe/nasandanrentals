@@ -126,7 +126,11 @@ const RentPage = () => {
 
       return;
     }
-    await bookVehicle({ ...formData, carId: parseInt(carId!), totalCost: 200 });
+    await bookVehicle({
+      ...formData,
+      carId: parseInt(carId!),
+      totalCost: car.price * numberOfDays,
+    });
   };
 
   let days = getNumberOfDays(pickupDate, pickupTime, returnDate, returnTime);
