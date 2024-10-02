@@ -13,8 +13,25 @@ const Collections = () => {
   const [fetchingCars, setFetchingCars] = useState(true);
 
   useEffect(() => {
+    const channel = supabase
+      .channel("car_update")
+      .on(
+        "postgres_changes",
+        {
+          event: "UPDATE",
+          schema: "public",
+          table: "cars",
+        },
+        (payload) => {
+          console.log(payload);
+        }
+      )
+      .subscribe();
     fetchCars();
-  }, []);
+    return () => {
+      channel.unsubscribe();
+    };
+  }, [supabase]);
 
   const fetchCars = async () => {
     const { data: cars, error } = await supabase.from("cars").select();
@@ -91,12 +108,18 @@ const Collections = () => {
                       />
                     </div>
                     <div className="flex justify-end gap-2">
-                      <Link href={`/rent?car_id=${car.id}`}>
-                        <CustomButton
-                          title="Book now"
-                          style="bg-green-500 hover:bg-green-600"
-                        />
-                      </Link>
+                      {car.available !== true ? (
+                        <span className="p-2 bg-gray-200 rounded-sm cursor-not-allowed text-sm">
+                          Not available
+                        </span>
+                      ) : (
+                        <Link href={`/rent?car_id=${car.id}`}>
+                          <CustomButton
+                            title="Book now"
+                            style="bg-green-500 hover:bg-green-600"
+                          />
+                        </Link>
+                      )}
                     </div>
                   </div>
                 </div>

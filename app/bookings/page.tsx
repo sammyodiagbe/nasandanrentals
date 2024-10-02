@@ -51,27 +51,6 @@ const BookingsPage = () => {
         <h1 className="text-gray-700">Your bookings</h1>
       </div>
 
-      <div className="p-4 grid md:grid-cols-3 gap-[1.9rem]">
-        <div className="booking-card ">
-          <h1 className="font-bold text-3xl">3</h1>
-          <div className="">
-            <h1>Reserved</h1>
-          </div>
-        </div>
-        <div className="booking-card">
-          <h1 className="font-bold text-3xl">0</h1>
-          <div className="">
-            <h1>Booked</h1>
-          </div>
-        </div>
-        <div className="booking-card">
-          <h1 className="font-bold text-3xl">7</h1>
-          <div className="">
-            <h1>Completed</h1>
-          </div>
-        </div>
-      </div>
-
       <div className="p-4 mt-10">
         <h1>Recent Bookings.</h1>
       </div>

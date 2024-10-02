@@ -130,7 +130,6 @@ export const signOutAction = async () => {
 };
 
 export const bookVehicle = async (formData: TBooking) => {
-  console.log("checking to see if actions is triggered");
   const supabase = createClient();
   const {
     pickupDate,
@@ -151,7 +150,6 @@ export const bookVehicle = async (formData: TBooking) => {
     redirect(`${origin}`);
   }
 
-  console.log(user);
   const res = await supabase
     .from("bookings")
     .insert({
@@ -172,9 +170,16 @@ export const bookVehicle = async (formData: TBooking) => {
 
   const { error, data } = res;
   if (error) {
-    console.log(error);
     return 0;
   }
+
+  const updateCar = await supabase
+    .from("cars")
+    .update({ available: false })
+    .eq("id", carId)
+    .select();
+
+  console.log(updateCar);
   await sendEmail({
     title: "Car booked Successfully",
     message: "Your vehicle has been successfully booked",
