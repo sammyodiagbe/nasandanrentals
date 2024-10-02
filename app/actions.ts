@@ -173,17 +173,22 @@ export const bookVehicle = async (formData: TBooking) => {
     return 0;
   }
 
-  const updateCar = await supabase
+  const { data: cars } = await supabase
     .from("cars")
     .update({ available: false })
     .eq("id", carId)
     .select();
 
-  console.log(updateCar);
   await sendEmail({
     title: "Car booked Successfully",
     message: "Your vehicle has been successfully booked",
     email: user.data.user?.email!,
+  });
+
+  await sendEmail({
+    title: "New car booking",
+    message: `New  booking request for ${cars![0].name} `,
+    email: "nasandanrentals@gmail.com",
   });
   redirect(`/booking-confirmed?booking_id=${data[0].id}`);
 };
@@ -198,7 +203,7 @@ export const makeStripePayment = async (data: {
   let product: Stripe.Product;
 
   product = products.find((product) => product.name === name) as Stripe.Product;
-  console.log("product: ", product.default_price);
+  console.log("product: ", product?.default_price);
   console.log(!product);
 
   if (!product) {
