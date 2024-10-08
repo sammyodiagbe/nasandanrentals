@@ -46,7 +46,7 @@ const BookingsPage = () => {
 
   const name = user?.user_metadata.full_name;
   return (
-    <main className="md:container py-8">
+    <main className="py-8">
       <div className="p-4 mb-8 space-y-2">
         <h1 className="text-5xl font-bold text-gray-800">Hi, {name}.</h1>
         <h1 className="text-gray-700">Your bookings</h1>
