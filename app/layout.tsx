@@ -18,7 +18,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={GeistSans.className} suppressHydrationWarning>
       <body className="bg-background text-foreground">
-        <div className="min-h-[100dvh] grid grid-rows-[auto_1fr_auto] max-w-full">
+        <div className="">
           <Navbar />
           <Suspense>{children}</Suspense>
           <Toaster />

@@ -60,7 +60,7 @@ const Navbar = () => {
   };
   return (
     <nav className=" p-4  sticky top-0 bg-white z-10">
-      <div className="lg:container flex justify-between items-center">
+      <div className="flex justify-between items-center">
         <h1 className="font-bold text-xl">
           <Link href={"/"}>Nasandan</Link>
         </h1>
