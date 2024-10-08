@@ -162,7 +162,6 @@ export const bookVehicle = async (formData: TBooking) => {
       fullname,
       address,
       email: emailAddress,
-      status: 1,
       user_id: user.data.user?.id,
       phone_number: phonenumber,
     })
@@ -257,6 +256,9 @@ export const SignupWithGoogle = async () => {
   const supabase = createClient();
   const { data } = await supabase.auth.signInWithOAuth({
     provider: "google",
+    options: {
+      redirectTo: `${origin}/auth/callback`,
+    },
   });
   if (data?.url) {
     redirect(data.url);
