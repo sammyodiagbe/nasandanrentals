@@ -158,7 +158,7 @@ export const bookVehicle = async (formData: TBooking) => {
       return_time: returnTime,
       return_date: returnDate,
       total_cost: totalCost,
-      car_id: carId,
+      car: carId,
       fullname,
       address,
       email: emailAddress,
@@ -169,6 +169,7 @@ export const bookVehicle = async (formData: TBooking) => {
     .select();
 
   const { error, data } = res;
+  console.log(error);
   if (error) {
     return 0;
   }
@@ -196,16 +197,17 @@ export const bookVehicle = async (formData: TBooking) => {
 export const makeStripePayment = async (data: {
   name: string;
   price: number;
-  amount: number;
+  quantity: number;
 }) => {
-  const { name, price, amount } = data;
+  const { name, price, quantity } = data;
   const { data: products } = await stripeClient.products.list();
   let url: string | null = null;
   let product: Stripe.Product;
 
   product = products.find((product) => product.name === name) as Stripe.Product;
   console.log("product: ", product?.default_price);
-  console.log(!product);
+  console.log("found product, ", product);
+  console.log(product);
 
   if (!product) {
     // creates a product
@@ -220,7 +222,9 @@ export const makeStripePayment = async (data: {
 
   // then we try to sell the product
   const session = await stripeClient.checkout.sessions.create({
-    line_items: [{ quantity: amount, price: product.default_price as string }],
+    line_items: [
+      { quantity: quantity, price: product.default_price as string },
+    ],
     mode: "payment",
     success_url: `${origin}/payment-successful?session_id={CHECKOUT_SESSION_ID}&car_name=${name}`,
   });

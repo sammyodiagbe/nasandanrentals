@@ -12,6 +12,6 @@ export type TBooking = {
   fullname: string;
   address: string;
   totalCost: number;
-  carId: number;
+  carId: string;
   phonenumber: string;
 };

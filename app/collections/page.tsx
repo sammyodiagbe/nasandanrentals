@@ -1,6 +1,7 @@
 "use client";
 import CustomButton from "@/components/app-components/button";
 import CollectionSkeleton from "@/components/skeletons/collections";
+import { Car } from "@/lib/types";
 import { createClient } from "@/utils/supabase/client";
 import Image from "next/image";
 import Link from "next/link";
@@ -8,7 +9,7 @@ import { FC, useEffect, useState } from "react";
 
 const Collections = () => {
   const supabase = createClient();
-  const [allCars, setCars] = useState<any[] | null>([]);
+  const [allCars, setCars] = useState<Car[]>([]);
   const [errorFetching, setError] = useState(false);
   const [fetchingCars, setFetchingCars] = useState(true);
 
@@ -18,12 +19,26 @@ const Collections = () => {
       .on(
         "postgres_changes",
         {
-          event: "UPDATE",
+          event: "*",
           schema: "public",
           table: "cars",
         },
         (payload) => {
-          console.log(payload);
+          if (payload.eventType === "INSERT") {
+            setCars((cars) => [...cars, payload.new as Car]);
+            console.log("new car added");
+          } else if (payload.eventType === "UPDATE") {
+            setCars(
+              (currentItems) =>
+                currentItems?.map((item) =>
+                  item.id === payload.new.id ? payload.new : item
+                ) as Car[]
+            );
+          } else if (payload.eventType === "DELETE") {
+            setCars((currentItems) =>
+              currentItems?.filter((item) => item.id !== payload.old.id)
+            );
+          }
         }
       )
       .subscribe();
@@ -38,7 +53,7 @@ const Collections = () => {
     if (errorFetching) {
       setError(true);
       setFetchingCars(false);
-      setCars(null);
+      setCars([]);
       return;
     }
     if (cars) {
@@ -65,7 +80,7 @@ const Collections = () => {
             return (
               <div className=" flex   flex-col justify-between" key={index}>
                 <Image
-                  src={car.image_url}
+                  src={car.image_url!}
                   alt={car.name}
                   width={500}
                   height={500}
@@ -88,7 +103,7 @@ const Collections = () => {
                         alt="allowd km per day"
                       />
                       <span className="text-sm">
-                        {car.allowed_km} KM per day
+                        {car.allowed_kms} KM per day
                       </span>
                     </div>
                   </div>
@@ -96,11 +111,11 @@ const Collections = () => {
                     <div className="flex gap-2">
                       <FeatureComponent
                         img_path="/icons/Seat.svg"
-                        value={car.doors}
+                        value={car.doors.toString()}
                       />
                       <FeatureComponent
                         img_path="/icons/Users.svg"
-                        value={car.seats}
+                        value={car.seats.toString()}
                       />
                       <FeatureComponent
                         img_path="/icons/Engine.svg"
