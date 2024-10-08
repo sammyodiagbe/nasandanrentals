@@ -1,17 +1,18 @@
 export type Booking = {
   id: number;
   created_at?: any;
-  pickup_time: Date;
+  pickup_time: string;
   pickup_date: Date;
-  return_time: Date;
+  return_time: string;
   return_date: Date;
-  car: object;
+  car: Car;
   fullname: string;
   email: string;
   address: string;
   total_cost: string;
   phone_number: string;
   user_id: string;
+  status: "booked" | "confirmed";
 };
 
 export type Car = {

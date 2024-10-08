@@ -17,6 +17,7 @@ import { Button } from "@/components/ui/button";
 import { User } from "@supabase/supabase-js";
 import { createClient } from "@/utils/supabase/client";
 import { cn } from "@/lib/utils";
+import TableComponent from "@/components/app-components/bookingsTable";
 
 const BookingsPage = () => {
   const [bookings, setBookings] = useState<any[] | null>(null);
@@ -56,62 +57,7 @@ const BookingsPage = () => {
       </div>
 
       {bookings && bookings.length ? (
-        <Table className="relative w-full">
-          <TableCaption>A list of your recent bookings.</TableCaption>
-          <TableHeader>
-            <TableRow>
-              <TableHead className="">Car name</TableHead>
-              <TableHead>Price ($)</TableHead>
-              <TableHead>Pickup date</TableHead>
-              <TableHead>Pickup Time</TableHead>
-              <TableHead className="t">Return date</TableHead>
-              <TableHead className="t">Return time</TableHead>
-              <TableHead className="t">Total Cost ($)</TableHead>
-              <TableHead className="t">Status</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {bookings?.map((booking, index) => {
-              console.log(booking);
-              const {
-                cars: { name, price },
-                pickup_date,
-                pickup_time,
-                total_cost,
-                return_date,
-                return_time,
-                status,
-              } = booking;
-              return (
-                <TableRow key={index}>
-                  <TableCell className="">{name}</TableCell>
-                  <TableCell>{price}</TableCell>
-                  <TableCell>{format(pickup_date, "PPP")}</TableCell>
-                  <TableCell className="">
-                    {combineDateAndTime(pickup_date, pickup_time)}
-                  </TableCell>
-                  <TableCell className="">
-                    {format(return_date, "PPP")}
-                  </TableCell>
-                  <TableCell className="">
-                    {combineDateAndTime(return_date, return_time)}
-                  </TableCell>
-                  <TableCell className="">{total_cost}</TableCell>
-                  <TableCell className="">
-                    <span
-                      className={cn(
-                        "p-1 px-4 bg-gray-300 text-black rounded-full",
-                        status === "completed" && "bg-green-500 text-white"
-                      )}
-                    >
-                      {status}
-                    </span>
-                  </TableCell>
-                </TableRow>
-              );
-            })}
-          </TableBody>
-        </Table>
+        <TableComponent bookings={bookings} />
       ) : (
         <div className="flex items-center justify-center flex-col gap-2 text-gray-800  text-center mt-5 mx-auto">
           <h1 className="text-xl font-bold">Oh no, you have no booking yet</h1>
