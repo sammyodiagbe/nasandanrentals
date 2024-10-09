@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React, { useState, useEffect, useRef } from "react";
 
 interface MobileMenuProps {
@@ -12,6 +13,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
   const menuRef = useRef<HTMLDivElement>(null);
   const firstFocusableRef = useRef<HTMLButtonElement>(null);
   const lastFocusableRef = useRef<HTMLAnchorElement>(null);
+  const router = useRouter();
 
   useEffect(() => {
     setAnimateIcon(isOpen);
@@ -86,6 +88,11 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
                 <Link
                   href="/"
                   className="block hover:text-green-500 focus:outline-none focus:ring-2 focus:ring-green-500"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onClose();
+                    router.push("/");
+                  }}
                 >
                   Home
                 </Link>
@@ -94,6 +101,11 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
                 <Link
                   href="/collections"
                   className="block hover:text-green-500 focus:outline-none focus:ring-2 focus:ring-green-500"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onClose();
+                    router.push("/collections");
+                  }}
                 >
                   Collections
                 </Link>
@@ -101,6 +113,11 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
               <li>
                 <Link
                   href="/bookings"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onClose();
+                    router.push("/bookings");
+                  }}
                   className="block hover:text-green-500 focus:outline-none focus:ring-2 focus:ring-green-500"
                 >
                   Bookings
