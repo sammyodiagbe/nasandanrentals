@@ -20,7 +20,9 @@ export default function RootLayout({
       <body className="bg-background text-foreground">
         <div className="">
           <Navbar />
-          <Suspense>{children}</Suspense>
+          <Suspense>
+            <div className="min-h-[calc(100vh - 70px)]">{children}</div>
+          </Suspense>
           <Toaster />
           <Footer />
         </div>
