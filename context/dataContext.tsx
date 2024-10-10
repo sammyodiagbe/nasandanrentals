@@ -9,16 +9,23 @@ type TDataContextProvider = {
   children: React.ReactNode;
 };
 
+type TIsBooked = {
+  start: Date;
+  end: Date;
+};
+
 type TDataContext = {
   bookings: Booking[];
   cars: Car[];
   user: User | null;
+  bookedDates: TIsBooked[];
 };
 
 const dataContext = createContext<TDataContext>({
   cars: [],
   bookings: [],
   user: null,
+  bookedDates: [],
 });
 
 const DataContextProvider: FC<TDataContextProvider> = ({ children }) => {
@@ -26,19 +33,29 @@ const DataContextProvider: FC<TDataContextProvider> = ({ children }) => {
   const [cars, setCars] = useState<Car[]>([]);
   const [user, setUser] = useState<User | null>(null);
   const supabase = createClient();
+  const [bookedDates, setBookedDates] = useState<TIsBooked[]>([]);
 
   useEffect(() => {
     if (!user) {
       fetchUser();
     }
     if (user) {
-      console.log(user);
       fetchUserBookings();
     }
   }, [user]);
 
   const fetchUserBookings = async () => {
     const bookings = await getUserBookings();
+
+    if (bookings?.length) {
+      setBookedDates(
+        bookings.map((booking) => {
+          const { pickup_date, return_date } = booking;
+          return { start: pickup_date, end: return_date };
+        })
+      );
+    }
+
     setBookings(bookings ?? []);
   };
 
@@ -46,13 +63,12 @@ const DataContextProvider: FC<TDataContextProvider> = ({ children }) => {
     const {
       data: { user },
     } = await supabase.auth.getUser();
-    console.log(user);
     if (user) {
       setUser(user);
     }
   };
   return (
-    <dataContext.Provider value={{ bookings, cars, user }}>
+    <dataContext.Provider value={{ bookings, cars, user, bookedDates }}>
       {children}
     </dataContext.Provider>
   );

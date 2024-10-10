@@ -1,8 +1,8 @@
 import { bookVehicle } from "@/app/actions";
+import { useDataContext } from "@/context/dataContext";
 import { useToast } from "@/hooks/use-toast";
 import { getNumberOfDays, isPastDate } from "@/utils/dateFormat";
 import { createClient } from "@/utils/supabase/client";
-import { generateTime } from "@/utils/timeOptions";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -28,6 +28,7 @@ const useRentHook = () => {
   const carId = searchParams.get("car_id");
   const [car, setCar] = useState<any | null>(null);
   const { toast } = useToast();
+  const { bookedDates } = useDataContext();
   const {
     handleSubmit,
     control,
@@ -110,11 +111,29 @@ const useRentHook = () => {
   };
 
   let days = getNumberOfDays(pickupDate, pickupTime, returnDate, returnTime);
-  const bookAction = (formData: FormData) => {
-    console.log(formData);
+
+  const isDateBooked = (date: Date) => {
+    return bookedDates.some((range) => {
+      return date >= range.start && date <= range.end;
+    });
   };
 
-  return { book, car, handleSubmit, control, errors, days, isSubmitting };
+  const isDateDisabled = (date: Date) => {
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    return date <= yesterday || isDateBooked(date);
+  };
+
+  return {
+    book,
+    car,
+    handleSubmit,
+    control,
+    errors,
+    days,
+    isSubmitting,
+    isDateDisabled,
+  };
 };
 
 export default useRentHook;

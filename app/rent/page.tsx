@@ -28,8 +28,16 @@ import useRentHook from "@/custom-hooks/useRentHook";
 const times = generateTime(7, 17);
 
 const RentPage = () => {
-  const { car, control, handleSubmit, book, errors, days, isSubmitting } =
-    useRentHook();
+  const {
+    car,
+    control,
+    handleSubmit,
+    book,
+    errors,
+    days,
+    isSubmitting,
+    isDateDisabled,
+  } = useRentHook();
   return (
     <main className="lg:container py-4">
       <div className="p-4">
@@ -83,6 +91,7 @@ const RentPage = () => {
                               selected={field.value}
                               {...field}
                               onDayClick={field.onChange}
+                              disabled={isDateDisabled}
                             />
                           </PopoverContent>
                         </Popover>
@@ -114,7 +123,7 @@ const RentPage = () => {
                                 <SelectItem
                                   {...field}
                                   value={time}
-                                  key={Math.random()}
+                                  key={index}
                                   className="w-full"
                                 >
                                   {time}
@@ -164,6 +173,7 @@ const RentPage = () => {
                               selected={field.value}
                               {...field}
                               onDayClick={field.onChange}
+                              disabled={isDateDisabled}
                             />
                           </PopoverContent>
                         </Popover>
@@ -195,7 +205,7 @@ const RentPage = () => {
                                   <SelectItem
                                     {...field}
                                     value={time}
-                                    key={Math.random()}
+                                    key={index}
                                     className="w-full"
                                   >
                                     {time}

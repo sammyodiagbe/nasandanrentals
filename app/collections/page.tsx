@@ -123,18 +123,12 @@ const Collections = () => {
                       />
                     </div>
                     <div className="flex justify-end gap-2">
-                      {car.available !== true ? (
-                        <span className="p-2 bg-gray-200 rounded-sm cursor-not-allowed text-sm">
-                          Not available
-                        </span>
-                      ) : (
-                        <Link href={`/rent?car_id=${car.id}`}>
-                          <CustomButton
-                            title="Book now"
-                            style="bg-green-500 hover:bg-green-600"
-                          />
-                        </Link>
-                      )}
+                      <Link href={`/rent?car_id=${car.id}`}>
+                        <CustomButton
+                          title="Book now"
+                          style="bg-green-500 hover:bg-green-600"
+                        />
+                      </Link>
                     </div>
                   </div>
                 </div>
