@@ -11,7 +11,6 @@ import Link from "next/link";
 export default function Login({ searchParams }: { searchParams: Message }) {
   const attemptLoginWithGoogle = async () => {
     const origin = await SignupWithGoogle();
-    console.log(origin);
   };
   return (
     <div className="">

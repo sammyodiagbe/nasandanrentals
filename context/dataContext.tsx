@@ -28,8 +28,11 @@ const DataContextProvider: FC<TDataContextProvider> = ({ children }) => {
   const supabase = createClient();
 
   useEffect(() => {
-    fetchUser();
+    if (!user) {
+      fetchUser();
+    }
     if (user) {
+      console.log(user);
       fetchUserBookings();
     }
   }, [user]);

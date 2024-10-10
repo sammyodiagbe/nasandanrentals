@@ -23,11 +23,12 @@ import { useDataContext } from "@/context/dataContext";
 const BookingsPage = () => {
   const { user, bookings } = useDataContext()!;
 
+  console.log(user);
   return (
     <main className="py-8">
       <div className="p-4 mb-8 space-y-2">
         <h1 className="text-5xl font-bold text-gray-800">
-          Hi, {user ? user.user_metadata.fullname : "There"}.
+          Hi, {user ? user.user_metadata.name : "There"}.
         </h1>
         <h1 className="text-gray-700">Your bookings</h1>
       </div>
