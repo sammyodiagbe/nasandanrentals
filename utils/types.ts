@@ -15,3 +15,8 @@ export type TBooking = {
   carId: string;
   phonenumber: string;
 };
+
+export type TIsBooked = {
+  start: Date;
+  end: Date;
+};

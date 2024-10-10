@@ -1,8 +1,10 @@
 import { bookVehicle } from "@/app/actions";
 import { useDataContext } from "@/context/dataContext";
 import { useToast } from "@/hooks/use-toast";
+import { Booking } from "@/lib/types";
 import { getNumberOfDays, isPastDate } from "@/utils/dateFormat";
 import { createClient } from "@/utils/supabase/client";
+import { TIsBooked } from "@/utils/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -28,7 +30,7 @@ const useRentHook = () => {
   const carId = searchParams.get("car_id");
   const [car, setCar] = useState<any | null>(null);
   const { toast } = useToast();
-  const { bookedDates } = useDataContext();
+  const [bookedDates, setBookedDates] = useState<TIsBooked[]>([]);
   const {
     handleSubmit,
     control,
@@ -56,7 +58,26 @@ const useRentHook = () => {
 
   useEffect(() => {
     getCarData();
+    if (carId) {
+      getAvailableDates();
+    }
   }, [carId]);
+
+  const getAvailableDates = async () => {
+    const { data: bookings } = await supabase
+      .from("bookings")
+      .select()
+      .eq("car", carId)
+      .returns<Booking[]>();
+
+    const dates = bookings?.map((booking) => {
+      const { pickup_date, return_date } = booking;
+      return { start: new Date(pickup_date), end: new Date(return_date) };
+    })!;
+
+    console.log(dates);
+    setBookedDates(dates);
+  };
 
   const getCarData = async () => {
     const { data: car, error } = await supabase
@@ -113,9 +134,11 @@ const useRentHook = () => {
   let days = getNumberOfDays(pickupDate, pickupTime, returnDate, returnTime);
 
   const isDateBooked = (date: Date) => {
-    return bookedDates.some((range) => {
+    const check = bookedDates.some((range) => {
       return date >= range.start && date <= range.end;
     });
+
+    return check;
   };
 
   const isDateDisabled = (date: Date) => {
