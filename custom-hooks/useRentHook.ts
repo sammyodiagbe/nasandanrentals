@@ -135,7 +135,9 @@ const useRentHook = () => {
 
   const isDateBooked = (date: Date) => {
     const check = bookedDates.some((range) => {
-      return date >= range.start && date <= range.end;
+      const d = new Date();
+      d.setDate(range.end.getDate() + 1);
+      return date >= range.start && date <= d;
     });
 
     return check;

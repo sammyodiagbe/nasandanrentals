@@ -48,12 +48,6 @@ const DataContextProvider: FC<TDataContextProvider> = ({ children }) => {
     const bookings = await getUserBookings();
 
     if (bookings?.length) {
-      setBookedDates(
-        bookings.map((booking) => {
-          const { pickup_date, return_date } = booking;
-          return { start: pickup_date, end: return_date };
-        })
-      );
     }
 
     setBookings(bookings ?? []);
