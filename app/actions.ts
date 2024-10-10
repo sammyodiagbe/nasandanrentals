@@ -10,6 +10,7 @@ import { calculateStripeFees, stripeClient } from "@/utils/stripe";
 import Stripe from "stripe";
 import { UserResponse } from "@supabase/supabase-js";
 import { origin } from "@/utils/url";
+import { Booking } from "@/lib/types";
 
 export const signUpAction = async (formData: FormData) => {
   const email = formData.get("email")?.toString();
@@ -247,7 +248,8 @@ export const getUserBookings = async () => {
     .select(
       "created_at,status, pickup_date,total_cost, pickup_time, return_date, return_time, id, car (name, price)"
     )
-    .eq("user_id", user.id);
+    .eq("user_id", user.id)
+    .returns<Booking[]>();
 
   return bookings;
 };

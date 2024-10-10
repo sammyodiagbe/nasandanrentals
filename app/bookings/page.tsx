@@ -18,37 +18,17 @@ import { User } from "@supabase/supabase-js";
 import { createClient } from "@/utils/supabase/client";
 import { cn } from "@/lib/utils";
 import TableComponent from "@/components/app-components/bookingsTable";
+import { useDataContext } from "@/context/dataContext";
 
 const BookingsPage = () => {
-  const [bookings, setBookings] = useState<any[] | null>(null);
-  const [user, setUser] = useState<User | null>();
-  const supabase = createClient();
+  const { user, bookings } = useDataContext()!;
 
-  useEffect(() => {
-    fetchUser();
-    fetchUserBookings();
-  }, []);
-
-  const fetchUser = async () => {
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-    console.log(user);
-    if (user) {
-      setUser(user);
-    }
-  };
-
-  const fetchUserBookings = async () => {
-    const bookings = await getUserBookings();
-    setBookings(bookings);
-  };
-
-  const name = user?.user_metadata.full_name;
   return (
     <main className="py-8">
       <div className="p-4 mb-8 space-y-2">
-        <h1 className="text-5xl font-bold text-gray-800">Hi, {name}.</h1>
+        <h1 className="text-5xl font-bold text-gray-800">
+          Hi, {user ? user.user_metadata.fullname : "There"}.
+        </h1>
         <h1 className="text-gray-700">Your bookings</h1>
       </div>
 
