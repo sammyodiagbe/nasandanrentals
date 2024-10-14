@@ -52,3 +52,5 @@ export const isPastDate = (date: Date, time: string) => {
   const givenDate = new Date(`${d}T${time}`);
   return isBefore(givenDate, now);
 };
+
+
