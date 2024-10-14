@@ -34,8 +34,6 @@ export function getNumberOfDays(
   const pickupDateTime = `${pickupD}T${pickupTime}`;
   const returnDateTime = `${returnD}T${returnTime}`;
 
-  console.log(pickupDateTime);
-
   // Create the new Date object
   const pickupdateObject = new Date(pickupDateTime);
   const returnDateObject = new Date(returnDateTime);
