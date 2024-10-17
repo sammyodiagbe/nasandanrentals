@@ -67,7 +67,7 @@ const Navbar = () => {
             <Image
               src={"/images/favicon.svg"}
               alt={"logo"}
-              className="h-20 w-20"
+              className="h-10 w-10"
               height={100}
               width={100}
             />
