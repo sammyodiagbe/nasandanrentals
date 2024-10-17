@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { User } from "@supabase/supabase-js";
 import { redirect, useRouter } from "next/navigation";
 import MobileMenu from "./menuComponent";
+import Image from "next/image";
 
 const Navbar = () => {
   const supabase = createClient();
@@ -62,7 +63,15 @@ const Navbar = () => {
     <nav className=" p-4  sticky top-0 bg-white z-10 h-[70px]">
       <div className="flex justify-between items-center">
         <h1 className="font-bold text-xl">
-          <Link href={"/"}>Nasandan</Link>
+          <Link href={"/"}>
+            <Image
+              src={"/images/favicon.svg"}
+              alt={"logo"}
+              className="h-20 w-20"
+              height={100}
+              width={100}
+            />
+          </Link>
         </h1>
 
         <button
