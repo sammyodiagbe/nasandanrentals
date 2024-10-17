@@ -63,7 +63,7 @@ const Navbar = () => {
     <nav className=" p-4  sticky top-0 bg-white z-10 h-[70px]">
       <div className="flex justify-between items-center">
         <h1 className="font-bold text-xl">
-          <Link href={"/"}>
+          <Link href={"/"} className="flex gap-1 items-center ">
             <Image
               src={"/images/favicon.svg"}
               alt={"logo"}
