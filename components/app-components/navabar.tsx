@@ -67,10 +67,11 @@ const Navbar = () => {
             <Image
               src={"/images/favicon.svg"}
               alt={"logo"}
-              className="h-10 w-10"
+              className="h-12 w-12"
               height={100}
               width={100}
             />
+            <h1>Nasandanrentals</h1>
           </Link>
         </h1>
 
