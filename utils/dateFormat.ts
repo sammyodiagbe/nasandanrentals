@@ -6,7 +6,6 @@ export function combineDateAndTime(timestamp: string, timeOfDay: string) {
 
   // Combine the date with the provided time of day
   const combinedDateTime = `${datePart}T${timeOfDay}`;
-
   // Create the new Date object
   const dateObject = new Date(combinedDateTime);
 

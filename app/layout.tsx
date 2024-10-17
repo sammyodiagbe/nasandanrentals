@@ -7,8 +7,8 @@ import { Toaster } from "@/components/ui/toaster";
 import DataContextProvider from "@/context/dataContext";
 
 export const metadata = {
-  title: "Next.js and Supabase Starter Kit",
-  description: "The fastest way to build apps with Next.js and Supabase",
+  title: "Nasandan rentals - Cars for rent",
+  description: "The fastest and easiest way to get going.",
 };
 
 export default function RootLayout({
