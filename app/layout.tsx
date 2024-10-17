@@ -18,6 +18,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={GeistSans.className} suppressHydrationWarning>
+      <head>
+        <link rel="icon" href="../assets/images/favicon.svg" sizes="any" />
+      </head>
       <body className="bg-background text-foreground">
         <DataContextProvider>
           <div className="">
