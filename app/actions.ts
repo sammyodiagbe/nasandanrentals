@@ -10,7 +10,7 @@ import { calculateStripeFees, stripeClient } from "@/utils/stripe";
 import Stripe from "stripe";
 import { UserResponse } from "@supabase/supabase-js";
 import { origin } from "@/utils/url";
-import { Booking } from "@/lib/types";
+import { Booking, Car } from "@/lib/types";
 
 export const signUpAction = async (formData: FormData) => {
   const email = formData.get("email")?.toString();
@@ -163,35 +163,36 @@ export const bookVehicle = async (formData: TBooking) => {
       fullname,
       address,
       email: emailAddress,
-      user_id: user.data.user?.id,
       phone_number: phonenumber,
-    })
-    .select();
+    }).select(`
+      id,
+      email, 
+      phone_number, 
+      pickup_date, 
+      return_time, 
+      car (
+       name
+    )`).returns<Booking[]>();
 
-  const { error, data } = res;
-  console.log(error);
+    console.log(res)
+
+  const { error, data: booking } = res;
   if (error) {
     return 0;
   }
 
-  const { data: cars } = await supabase
-    .from("cars")
-    .update({ available: false })
-    .eq("id", carId)
-    .select();
-
   await sendEmail({
     title: "Car booked Successfully",
     message: "Your vehicle has been successfully booked",
-    email: user.data.user?.email!,
+    email: emailAddress,
   });
 
   await sendEmail({
     title: "New car booking",
-    message: `New  booking request for ${cars![0].name}, name: ${fullname}, email: ${emailAddress}, phonenumber: ${phonenumber} `,
+    message: `New  booking request for ${booking[0].car.name}, name: ${fullname}, email: ${emailAddress}, phonenumber: ${phonenumber} `,
     email: "nasandanrentals@gmail.com",
   });
-  redirect(`/booking-confirmed?booking_id=${data[0].id}`);
+  redirect(`/booking-confirmed?booking_id=${booking[0].id}`);
 };
 
 export const makeStripePayment = async (data: {
@@ -205,9 +206,7 @@ export const makeStripePayment = async (data: {
   let product: Stripe.Product;
 
   product = products.find((product) => product.name === name) as Stripe.Product;
-  console.log("product: ", product?.default_price);
-  console.log("found product, ", product);
-  console.log(product);
+  
 
   if (!product) {
     // creates a product

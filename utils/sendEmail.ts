@@ -18,6 +18,7 @@ export const sendEmail = async (emailData: {
   });
 
   if (error) {
+    console.log(error)
     return false;
   }
 
