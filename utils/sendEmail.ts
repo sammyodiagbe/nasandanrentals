@@ -4,15 +4,15 @@ import { Resend } from "resend";
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 export const sendEmail = async (emailData: {
-  title: string;
+  title: string ;
   message: string;
   link?: string;
-  email: string;
+  email: string | string[];
 }) => {
   const { title, message, link, email } = emailData;
   const { data, error } = await resend.emails.send({
     from: "Nasandanrentals <nasan@nasandanrentals.ca>",
-    to: [email],
+    to: email,
     subject: title,
     react: EmailTemplate({ message, title, link }),
   });
