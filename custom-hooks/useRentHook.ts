@@ -70,12 +70,12 @@ const useRentHook = () => {
       .eq("car", carId)
       .returns<Booking[]>();
 
+    console.log(bookings);
     const dates = bookings?.map((booking) => {
       const { pickup_date, return_date } = booking;
       return { start: new Date(pickup_date), end: new Date(return_date) };
     })!;
 
-    console.log(dates);
     setBookedDates(dates);
   };
 
@@ -135,9 +135,10 @@ const useRentHook = () => {
 
   const isDateBooked = (date: Date) => {
     const check = bookedDates.some((range) => {
-      const d = new Date();
+      const d = new Date(range.end);
       d.setDate(range.end.getDate() + 1);
-      return date >= range.start && date <= d;
+      // console.log(d);
+      return date >= range.start && date < d;
     });
 
     return check;

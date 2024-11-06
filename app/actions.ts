@@ -10,7 +10,7 @@ import { calculateStripeFees, stripeClient } from "@/utils/stripe";
 import Stripe from "stripe";
 import { UserResponse } from "@supabase/supabase-js";
 import { origin } from "@/utils/url";
-import { Booking, Car } from "@/lib/types";
+import { Booking } from "@/lib/types";
 
 export const signUpAction = async (formData: FormData) => {
   const email = formData.get("email")?.toString();
